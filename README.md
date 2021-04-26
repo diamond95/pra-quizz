@@ -34,4 +34,4 @@ npm run serve
     TODO
 
 ## Screenshot v0.1.0
-    ![a](https://raw.githubusercontent.com/diamond95/pra-quizz/main/public/screenshot.png?token=AEHIZQBVTNF3634WH2EZGXTASCF2A)
+![a](https://github.com/diamond95/pra-quizz/blob/main/public/screenshot.png?raw=true)
