@@ -29,3 +29,6 @@ npm run serve
     Password: z>yC3VB8rD
     Host: 
     Port: 
+
+## Application deploy
+    TODO
