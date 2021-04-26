@@ -32,3 +32,6 @@ npm run serve
 
 ## Application deploy
     TODO
+
+## Screenshot v0.1.0
+    ![](https://raw.githubusercontent.com/diamond95/pra-quizz/main/public/screenshot.png?raw=true "0.1.0")
