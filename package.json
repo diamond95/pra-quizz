@@ -1,0 +1,80 @@
+{
+  "name": "quizz",
+  "version": "0.1.0",
+  "private": true,
+  "description": "```\r npm install\r ```",
+  "author": "imiljanic",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "quizz": "node server/src/app.js"
+  },
+  "main": "babel.config.js",
+  "dependencies": {
+    "@babel/core": "^7.12.0",
+    "@babel/eslint-parser": "^7.13.14",
+    "@mdi/js": "^5.9.55",
+    "@popperjs/core": "^2.9.2",
+    "aos": "^3.0.0-beta.6",
+    "axios": "^0.21.1",
+    "babel-eslint": "^10.1.0",
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "cross-blob": "^2.0.0",
+    "font-awesome": "^4.7.0",
+    "lodash": "^4.17.21",
+    "material-icons": "^0.3.1",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "numeral": "^2.0.6",
+    "vue": "^2.6.11",
+    "vue-i18n": "^8.24.2",
+    "vue-router": "^3.5.1",
+    "vuetify": "^2.4.11",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.0.0-beta.3",
+    "vuex-router-sync": "^5.0.0",
+    "vxe-table": "^3.2.20",
+    "xe-utils": "^3.2.1",
+    "xlsx": "^0.16.9"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-plugin-eslint": "^4.1.0",
+    "@vue/cli-plugin-router": "^4.1.0",
+    "@vue/cli-service": "^4.1.0",
+    "and": "0.0.3",
+    "deepmerge": "^4.2.2",
+    "es6-promise": "^4.2.8",
+    "eslint": "^7.7.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "fibers": "^5.0.0",
+    "install": "^0.13.0",
+    "npm": "^7.4.2",
+    "sass": "^1.26.10",
+    "sass-loader": "^8.0.2",
+    "vue-cli-plugin-vuetify": "^2.0.3",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "license": "ISC"
+}
