@@ -27,12 +27,16 @@
                   <ul>
                     <li>
                       <div class="login">
-                        <a href="#register" class="skill-btn">{{ $t("homePage.register_btn")}}</a>
+                        <a href="#register" class="skill-btn">{{
+                          $t("homePage.register_btn")
+                        }}</a>
                       </div>
                     </li>
                     <li>
                       <div class="login">
-                        <a href="#login" class="skill-btn">{{ $t("homePage.login_btn")}}</a>
+                        <a href="#login" class="skill-btn">{{
+                          $t("homePage.login_btn")
+                        }}</a>
                       </div>
                     </li>
                   </ul>
@@ -85,13 +89,17 @@
                   class="loginform-btn"
                   disabled
                 >
-                  <i class="fa fa-user"></i> {{ $t("homePage.login_btn")}}
+                  <i class="fa fa-user"></i> {{ $t("homePage.login_btn") }}
                 </button>
               </div>
             </li>
             <br />
             <li>
-              <a href=""><font color="white">{{ $t("homePage.fade_screen.reset_password")}}</font></a>
+              <a href=""
+                ><font color="white">{{
+                  $t("homePage.fade_screen.reset_password")
+                }}</font></a
+              >
             </li>
           </ul>
         </div>
@@ -145,7 +153,7 @@
             <li>
               <div class="login">
                 <button type="submit" class="registerform-btn" disabled>
-                  <i class="fa fa-user"></i> {{ $t("homePage.register_btn")}}
+                  <i class="fa fa-user"></i> {{ $t("homePage.register_btn") }}
                 </button>
               </div>
             </li>
@@ -177,7 +185,6 @@
                     data-aos-delay="700"
                     data-aos-duration="1200"
                   >
-                    
                     {{ $t("homePage.title") }}
                     <br />
                     {{ $t("homePage.titleEnd") }}
@@ -188,9 +195,9 @@
                     data-aos-delay="1500"
                     data-aos-duration="1200"
                   >
-                    {{ $t("homePage.description_1")}}
-                    <br />{{ $t("homePage.description_2")}} <br />
-                    {{ $t("homePage.description_3")}}
+                    {{ $t("homePage.description_1") }}
+                    <br />{{ $t("homePage.description_2") }} <br />
+                    {{ $t("homePage.description_3") }}
                   </p>
                   <div
                     class="learnmore"
@@ -199,9 +206,9 @@
                     data-aos-delay="1500"
                     data-aos-duration="1200"
                   >
-                    <a href="#join-game" id="registerbtn" class="skill-btn"
-                      >{{ $t("homePage.join_game_btn")}}</a
-                    >
+                    <a href="#join-game" id="registerbtn" class="skill-btn">{{
+                      $t("homePage.join_game_btn")
+                    }}</a>
                   </div>
                 </div>
               </div>
@@ -231,12 +238,13 @@
                 v-bind:placeholder="$t('homePage.fade_screen.game_pin')"
               />
             </li>
-            
+
             <br />
             <li>
               <div class="login">
                 <button type="submit" class="registerform-btn" disabled>
-                  <i class="fa fa-user"></i> {{ $t('homePage.fade_screen.game_enter')}}
+                  <i class="fa fa-user"></i>
+                  {{ $t("homePage.fade_screen.game_enter") }}
                 </button>
               </div>
             </li>
@@ -252,19 +260,26 @@
       <footer>
         <div class="row">
           <div class="col-xl-1 col-lg-1 col-md-1">
-            
-            <p class="text-left ml-8 mt-2">{{ $t("homePage.footer_language")}} 
-              </p>
-            
+            <p class="text-left ml-8 mt-2">
+              {{ $t("homePage.footer_language") }}
+            </p>
           </div>
           <div class="col-xl-1 col-lg-1 col-md-1">
-            
-            <v-select  v-model="$i18n.locale" class="d-inline"  item-value="key" item-text="val" :items="langs" solo dense></v-select>
+            <v-select
+              v-model="$i18n.locale"
+              class="d-inline"
+              item-value="key"
+              item-text="val"
+              :items="langs"
+              @change="toggleLanguage"
+              solo
+              dense
+            ></v-select>
           </div>
           <div class="col-xl-1 col-lg-1 col-md-1"></div>
           <div class="col-xl-6 col-lg-6 col-md-6">
             <p>
-              {{ $t("homePage.footer_description")}}
+              {{ $t("homePage.footer_description") }}
             </p>
           </div>
           <div class="col-xl-3 col-lg-3 col-md-3"></div>
@@ -283,7 +298,7 @@
 </style>
 
 <script>
-import { mdiChevronDown, mdiCogOutline, mdiTranslate  } from "@mdi/js";
+import { mdiChevronDown, mdiCogOutline, mdiTranslate } from "@mdi/js";
 export default {
   name: "HomePage",
   data() {
@@ -293,28 +308,21 @@ export default {
       mdiChevronDown,
       mdiTranslate,
       registration: {
-        email: '',
-        username: '',
-        password: ''
+        email: "",
+        username: "",
+        password: "",
       },
-      langs: [{
-        key: 'en',
-        val: 'English'
-      },
-      {
-        key: 'hr',
-        val: 'Croatian'
-      }
-      ]
+      langs: this.$i18n.messages[this.$i18n.locale].homePage.languages,
     };
   },
 
   methods: {
-    
+    toggleLanguage: function () {
+      this.langs = this.$i18n.messages[this.$i18n.locale].homePage.languages;
+    },
   },
 
   created() {
-
     setTimeout(() => (this.elementVisible = false), 1000);
   },
 };

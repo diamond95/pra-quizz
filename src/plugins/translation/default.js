@@ -17,7 +17,17 @@ export default {
                 game_enter: 'ENTER'
             },
             footer_description: '© Quizz.hr. Create your own quizz for FREE after registration!',
-            footer_language: 'Switch to:'
+            footer_language: 'Switch to:',
+            languages: [
+                {
+                    key: 'en',
+                    val: 'English'
+                  },
+                  {
+                    key: 'hr',
+                    val: 'Croatian'
+                  }
+            ]
         }
     },
     hr: {
@@ -38,7 +48,17 @@ export default {
                 game_enter: 'IGRAJ'
             },
             footer_description: '© Quizz.hr. Kreiraj svoj kviz besplatno nakon registracije!',
-            footer_language: 'Prebaci na:'
+            footer_language: 'Prebaci na:',
+            languages: [
+                {
+                    key: 'en',
+                    val: 'Engleski'
+                  },
+                  {
+                    key: 'hr',
+                    val: 'Hrvatski'
+                  }
+            ]
         }
     }
 }
