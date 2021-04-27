@@ -27,12 +27,12 @@
                   <ul>
                     <li>
                       <div class="login">
-                        <a href="#register" class="skill-btn">Register</a>
+                        <a href="#register" class="skill-btn">{{ $t("homePage.register_btn")}}</a>
                       </div>
                     </li>
                     <li>
                       <div class="login">
-                        <a href="#login" class="skill-btn">Login</a>
+                        <a href="#login" class="skill-btn">{{ $t("homePage.login_btn")}}</a>
                       </div>
                     </li>
                   </ul>
@@ -56,7 +56,7 @@
           <ul>
             <li>
               <input
-                placeholder="Korisničko ime"
+                v-bind:placeholder="$t('homePage.fade_screen.username')"
                 name="korisnicko_ime"
                 class="input-username"
                 spellcheck="false"
@@ -67,7 +67,7 @@
             <br />
             <li>
               <input
-                placeholder="Lozinka"
+                v-bind:placeholder="$t('homePage.fade_screen.password')"
                 class="input-pw"
                 name="lozinka"
                 type="password"
@@ -85,13 +85,13 @@
                   class="loginform-btn"
                   disabled
                 >
-                  <i class="fa fa-user"></i> Prijava
+                  <i class="fa fa-user"></i> {{ $t("homePage.login_btn")}}
                 </button>
               </div>
             </li>
             <br />
             <li>
-              <a href=""><font color="white">Zaboravio si lozinku?</font></a>
+              <a href=""><font color="white">{{ $t("homePage.fade_screen.reset_password")}}</font></a>
             </li>
           </ul>
         </div>
@@ -120,7 +120,7 @@
             <br />
             <li>
               <input
-                placeholder="Korisničko ime"
+                v-bind:placeholder="$t('homePage.fade_screen.username')"
                 class="input-username"
                 name="korisnicko_ime"
                 type="text"
@@ -131,7 +131,7 @@
             <br />
             <li>
               <input
-                placeholder="Lozinka"
+                v-bind:placeholder="$t('homePage.fade_screen.password')"
                 class="input-pw"
                 name="lozinka"
                 type="password"
@@ -142,7 +142,7 @@
             <li>
               <div class="login">
                 <button type="submit" class="registerform-btn" disabled>
-                  <i class="fa fa-user"></i> Registracija
+                  <i class="fa fa-user"></i> {{ $t("homePage.register_btn")}}
                 </button>
               </div>
             </li>
@@ -174,8 +174,10 @@
                     data-aos-delay="700"
                     data-aos-duration="1200"
                   >
-                    Play Quizz <br />
-                    and have fun!
+                    
+                    {{ $t("homePage.title") }}
+                    <br />
+                    {{ $t("homePage.titleEnd") }}
                   </h1>
                   <p
                     data-aos="fade-in"
@@ -183,10 +185,9 @@
                     data-aos-delay="1500"
                     data-aos-duration="1200"
                   >
-                    Quizz.hr is a game-based learning platform that brings
-                    <br />engagement and fun to players every year at school, at
-                    work, <br />
-                    and at home.
+                    {{ $t("homePage.description_1")}}
+                    <br />{{ $t("homePage.description_2")}} <br />
+                    {{ $t("homePage.description_3")}}
                   </p>
                   <div
                     class="learnmore"
@@ -195,8 +196,8 @@
                     data-aos-delay="1500"
                     data-aos-duration="1200"
                   >
-                    <a href="#register" id="registerbtn" class="skill-btn"
-                      >Join game</a
+                    <a href="#join-game" id="registerbtn" class="skill-btn"
+                      >{{ $t("homePage.join_game_btn")}}</a
                     >
                   </div>
                 </div>
@@ -212,17 +213,55 @@
       </div>
     </section>
 
+    <!--Join game-->
+    <form action="" method="POST" name="join-game" id="formaRegistracija">
+      <div class="register-box-area">
+        <div id="join-game" class="fade">
+          <a href="#" class="close-btn-white">
+            <b>X</b>
+          </a>
+          <ul>
+            <li>
+              <input
+                type="text"
+                class="input-username"
+                v-bind:placeholder="$t('homePage.fade_screen.game_pin')"
+              />
+            </li>
+            
+            <br />
+            <li>
+              <div class="login">
+                <button type="submit" class="registerform-btn" disabled>
+                  <i class="fa fa-user"></i> {{ $t('homePage.fade_screen.game_enter')}}
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+    <!-- end register -->
+
     <!-- ========= footer =========== -->
     <section id="footer-fixed">
       <!--copyright-->
       <footer>
         <div class="row">
-          <div class="col-xl-3 col-lg-3 col-md-3">
-            <p class="text-left ml-5">Switch to: Croatian</p>
+          <div class="col-xl-1 col-lg-1 col-md-1">
+            
+            <p class="text-left ml-8 mt-2">{{ $t("homePage.footer_language")}} 
+              </p>
+            
           </div>
+          <div class="col-xl-1 col-lg-1 col-md-1">
+            
+            <v-select  v-model="$i18n.locale" class="d-inline"  item-value="key" item-text="val" :items="langs" solo dense></v-select>
+          </div>
+          <div class="col-xl-1 col-lg-1 col-md-1"></div>
           <div class="col-xl-6 col-lg-6 col-md-6">
             <p>
-              © Quizz.hr. Create your own quizz for FREE after registration!
+              {{ $t("homePage.footer_description")}}
             </p>
           </div>
           <div class="col-xl-3 col-lg-3 col-md-3"></div>
@@ -241,7 +280,7 @@
 </style>
 
 <script>
-import { mdiChevronDown, mdiCogOutline } from "@mdi/js";
+import { mdiChevronDown, mdiCogOutline, mdiTranslate  } from "@mdi/js";
 export default {
   name: "HomePage",
   data() {
@@ -249,13 +288,26 @@ export default {
       elementVisible: true,
       mdiCogOutline,
       mdiChevronDown,
-      defaultLanguage: 'en'
+      mdiTranslate,
+     
+      langs: [{
+        key: 'en',
+        val: 'English'
+      },
+      {
+        key: 'hr',
+        val: 'Croatian'
+      }
+      ]
     };
   },
 
-  methods: {},
+  methods: {
+    
+  },
 
   created() {
+
     setTimeout(() => (this.elementVisible = false), 1000);
   },
 };
