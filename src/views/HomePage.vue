@@ -100,7 +100,7 @@
     <!-- end login -->
 
     <!--Register-->
-    <form action="" method="POST" name="register" id="formaRegistracija">
+    <form action="" method="POST" name="register">
       <div class="register-box-area">
         <div id="register" class="fade">
           <a href="#" class="close-btn-white">
@@ -109,6 +109,7 @@
           <ul>
             <li>
               <input
+                v-model="registration.email"
                 placeholder="Email"
                 class="input-email"
                 name="email"
@@ -120,6 +121,7 @@
             <br />
             <li>
               <input
+                v-model="registration.username"
                 v-bind:placeholder="$t('homePage.fade_screen.username')"
                 class="input-username"
                 name="korisnicko_ime"
@@ -131,6 +133,7 @@
             <br />
             <li>
               <input
+                v-model="registration.password"
                 v-bind:placeholder="$t('homePage.fade_screen.password')"
                 class="input-pw"
                 name="lozinka"
@@ -214,7 +217,7 @@
     </section>
 
     <!--Join game-->
-    <form action="" method="POST" name="join-game" id="formaRegistracija">
+    <form action="" method="POST" name="join-game">
       <div class="register-box-area">
         <div id="join-game" class="fade">
           <a href="#" class="close-btn-white">
@@ -289,7 +292,11 @@ export default {
       mdiCogOutline,
       mdiChevronDown,
       mdiTranslate,
-     
+      registration: {
+        email: '',
+        username: '',
+        password: ''
+      },
       langs: [{
         key: 'en',
         val: 'English'
