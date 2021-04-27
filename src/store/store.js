@@ -42,6 +42,12 @@ export default new Vuex.Store({
        },
        loggedUser(state, loggedUser) {
            state.loggedUser = loggedUser
+       },
+       logOut(state) {
+           state.user = null
+           state.token = null
+           state.isUserLoggedIn = null
+           state.userInformation = null
        }
 
 
@@ -58,6 +64,9 @@ export default new Vuex.Store({
         },
         loggedUser( { commit }, loggedUser) {
             commit('loggedUser', loggedUser)
+        },
+        logOut({commit}) {
+            commit("logOut")
         }
 
 
