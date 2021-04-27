@@ -357,6 +357,9 @@ export default {
         const login = (await AuthService.login(this.login));
         if(login.status == 200) {
           this.errorLogin = ``
+
+          await this.setAuthStore(login)
+
           this.$router.push({
             name: 'Home'
           })
@@ -365,6 +368,13 @@ export default {
       } catch (error) {
         this.errorLogin = error.response.data.error
       }
+    },
+
+    setAuthStore: async function(res) {
+      this.$store.dispatch("setToken", res.data.token)
+      this.$store.dispatch("setUser", res.data.user)
+      this.$store.dispatch("loggedUser", this.login.username)
+      this.$store.dispatch("setUserInformation", res.data)
     },
 
     joinGame: function() {
