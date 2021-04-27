@@ -645,7 +645,7 @@ ul.dropdown li a:after {
 	-ms-flex: 1 0 auto;
 	flex: 1 0 auto;
 	font-size: 25px;
-	max-width: 76%;
+	max-width: 100%;
 	outline: 0;
 	padding: 10px 3px;
 }
@@ -658,7 +658,7 @@ ul.dropdown li a:after {
 	-ms-flex: 1 0 auto;
 	flex: 1 0 auto;
 	font-size: 25px;
-	max-width: 76%;
+	max-width: 100%;
 	outline: 0;
 	padding: 10px 3px;
 }
@@ -671,7 +671,7 @@ ul.dropdown li a:after {
 	-ms-flex: 1 0 auto;
 	flex: 1 0 auto;
 	font-size: 25px;
-	max-width: 76%;
+	max-width: 100%;
 	outline: 0;
 	padding: 10px 3px;
 }

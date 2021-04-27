@@ -61,10 +61,10 @@
             <li>
               <input
                 v-bind:placeholder="$t('homePage.fade_screen.username')"
-                name="korisnicko_ime"
                 class="input-username"
                 spellcheck="false"
                 type="text"
+                v-model="login.username"
                 autocomplete="off"
               />
             </li>
@@ -73,9 +73,9 @@
               <input
                 v-bind:placeholder="$t('homePage.fade_screen.password')"
                 class="input-pw"
-                name="lozinka"
                 type="password"
                 autocomplete="off"
+                v-model="login.password"
               />
             </li>
 
@@ -83,11 +83,10 @@
             <li>
               <div class="login">
                 <button
-                  id="loginbtnform"
-                  type="submit"
+                  type="button"
+                  @click="userLogin"
                   name="login"
                   class="loginform-btn"
-                  disabled
                 >
                   <i class="fa fa-user"></i> {{ $t("homePage.login_btn") }}
                 </button>
@@ -101,6 +100,10 @@
                 }}</font></a
               >
             </li>
+            <br />
+            <li>
+              <p class="white--text">{{ errorLogin }}</p>
+            </li>
           </ul>
         </div>
       </div>
@@ -108,7 +111,7 @@
     <!-- end login -->
 
     <!--Register-->
-    <form action="" method="POST" name="register">
+    <form action="" method="POST" name="register" autocomplete="off">
       <div class="register-box-area">
         <div id="register" class="fade">
           <a href="#" class="close-btn-white">
@@ -123,7 +126,6 @@
                 name="email"
                 spellcheck="false"
                 type="email"
-                autocomplete="off"
               />
             </li>
             <br />
@@ -135,7 +137,6 @@
                 name="korisnicko_ime"
                 type="text"
                 spellcheck="false"
-                autocomplete="off"
               />
             </li>
             <br />
@@ -152,10 +153,14 @@
             <br />
             <li>
               <div class="login">
-                <button type="submit" class="registerform-btn" disabled>
+                <button type="button" @click="userRegistration" class="registerform-btn">
                   <i class="fa fa-user"></i> {{ $t("homePage.register_btn") }}
                 </button>
               </div>
+            </li>
+            <br />
+            <li>
+              <p class="white--text">{{ error }}</p>
             </li>
           </ul>
         </div>
@@ -299,6 +304,7 @@
 
 <script>
 import { mdiChevronDown, mdiCogOutline, mdiTranslate } from "@mdi/js";
+import AuthService from '@/services/AuthService'
 export default {
   name: "HomePage",
   data() {
@@ -312,7 +318,13 @@ export default {
         username: "",
         password: "",
       },
+      login: {
+        username: "",
+        password: ""
+      },
       langs: this.$i18n.messages[this.$i18n.locale].homePage.languages,
+      error: null,
+      errorLogin: null,
     };
   },
 
@@ -320,6 +332,39 @@ export default {
     toggleLanguage: function () {
       this.langs = this.$i18n.messages[this.$i18n.locale].homePage.languages;
     },
+    userRegistration: async function() {
+      if(this.registration.email.length < 1 || this.registration.username < 1 || this.registration.password < 1) {
+        this.error = `Sva polja su obavezna!`; 
+        return;
+      }
+
+      try {
+          const registration = (await AuthService.register(this.registration));
+          if(registration.status == 200) {
+            this.error = `Uspješno ste kreirali račun! Sada se možete prijaviti.`
+          }
+      } catch (error) {
+        this.error = error.response.data.error
+      }
+    },
+    userLogin: async function() {
+      if(this.login.username < 1 || this.login.password < 1) {
+        this.errorLogin = `Sva polja su obavezna!`; 
+        return;
+      }
+
+      try {
+        const login = (await AuthService.login(this.login));
+        if(login.status == 200) {
+          this.errorLogin = ``
+          this.$router.push({
+            name: 'Home'
+          })
+        }
+      } catch (error) {
+        this.errorLogin = error.response.data.error
+      }
+    }
   },
 
   created() {

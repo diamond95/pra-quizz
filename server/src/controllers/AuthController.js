@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 const bcrypt = require('bcrypt')
 //const util = require('util')
-
+const SALT = 10
 var db = require('../models/index')
 const ErrorHandling = require('../helpers/error_handling')
 /**
@@ -21,8 +21,14 @@ function jwtSignUser(user) {
   const ONE_DAY = 60 * 60 * 24
 
   return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_DAY
+   // expiresIn: ONE_DAY
   })
+}
+
+async function generateHash(pw) {
+  const salt = bcrypt.genSaltSync(SALT);
+  const hash = bcrypt.hashSync(pw, salt);
+  return hash
 }
 
 
@@ -42,19 +48,24 @@ module.exports = {
    * @returns {Object} User registration parameters 
    * @method POST
    */
-  /* eslint-disable */
   async register(req, res) {
     try {
-      const user = await User.create(req.body)
-      const userJson = user.toJSON()
+      
+      const { email, username, password } = req.body;
+
+      var hashedPassword = await generateHash(password);      
+      
+      var [user] = await db.query('INSERT INTO users SET email = ?, username = ?, password = ?', [email, username, hashedPassword]);
+
+      const userJson = { email, username }
       res.send({
         user: userJson,
         token: jwtSignUser(userJson)
-      })
+      });
     } catch (err) {
       res.status(400).send({
-        error: 'Ovaj email se već koristi.'
-      })
+        error: `Korisničko ime/email se već koristi.`
+      });
     }
 
   },
@@ -75,17 +86,19 @@ module.exports = {
 
     try {
 
-      const { email, password } = req.body
+      const { username, password } = req.body
 
-      var [[x8]] = await db.query('SELECT u.*, o.owner_name FROM user as u inner join owner as o on o.owner_id = u.owner_id WHERE user_email = ?', [email])
+      var [[x8]] = await db.query('SELECT * FROM users WHERE username = ?', [username])
 
+      
       if (!x8) {
         return res.status(403).send({
           error: 'Ovaj račun ne postoji.'
         })
       }
-      const isPasswordValid = await bcrypt.compare(password, x8.user_password)
-
+     
+      const isPasswordValid = await bcrypt.compare(password, x8.password)
+      
       if (!isPasswordValid) {
         return res.status(403).send({
           error: 'Uneseni podaci su neispravni!'

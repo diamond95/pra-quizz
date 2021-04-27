@@ -31,13 +31,14 @@ module.exports = (app) => {
      * @description User's registration
      * @method POST
      */
-    app.post('/register', isAuthenticated, AuthControllerPolicy.register, AuthController.register)
+    app.post('/register', AuthController.register)
 
     /**
      * @description User's login
      * @method POST
      */
-    app.post('/login', AuthControllerPolicy.login, AuthController.login)
+    // removed policy for authentication, joi AuthControllerPolicy.login,
+    app.post('/login',  AuthController.login)
 
 
 
