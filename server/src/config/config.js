@@ -6,15 +6,15 @@
 module.exports = {
     port: 8080,
     db: {
-        database: "quizzdb" || process.env.DB_NAME,
-        user: 'quizz-user' || process.env.DB_USER,
-        password: 'somepassword' || process.env.DB_PASS,
+        database: "pra_quizz" || process.env.DB_NAME,
+        user: 'quizz_user' || process.env.DB_USER,
+        password: 'z>yC3VB8rD' || process.env.DB_PASS,
         driver: "mysql",
 
         options: {
             dialect: 'mysql',
-            host: '10.150.30.233',
-            port: 33067
+            host: 'localhost',
+            port: 3306
         }
     },
     db2: {
