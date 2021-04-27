@@ -51,7 +51,7 @@
     </header>
 
     <!--Login-->
-    <form action="" method="POST" name="login">
+    <form action="" method="POST" name="login" @keydown.enter="userLogin">
       <div class="login-box-area">
         <div id="login" class="fade">
           <a href="#" class="close-btn">
@@ -111,7 +111,7 @@
     <!-- end login -->
 
     <!--Register-->
-    <form action="" method="POST" name="register" autocomplete="off">
+    <form action="" method="POST" name="register" autocomplete="off" @keydown.enter="userRegistration">
       <div class="register-box-area">
         <div id="register" class="fade">
           <a href="#" class="close-btn-white">
@@ -229,7 +229,7 @@
     </section>
 
     <!--Join game-->
-    <form action="" method="POST" name="join-game">
+    <form action="" method="POST" name="join-game" @keydown.enter="joinGame">
       <div class="register-box-area">
         <div id="join-game" class="fade">
           <a href="#" class="close-btn-white">
@@ -247,7 +247,7 @@
             <br />
             <li>
               <div class="login">
-                <button type="submit" class="registerform-btn" disabled>
+                <button type="button" class="registerform-btn" @click="joinGame">
                   <i class="fa fa-user"></i>
                   {{ $t("homePage.fade_screen.game_enter") }}
                 </button>
@@ -360,10 +360,15 @@ export default {
           this.$router.push({
             name: 'Home'
           })
+          // TODO - save token, user information into vuex for auth meta tags
         }
       } catch (error) {
         this.errorLogin = error.response.data.error
       }
+    },
+
+    joinGame: function() {
+      // todo
     }
   },
 
