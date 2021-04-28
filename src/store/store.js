@@ -24,6 +24,7 @@ export default new Vuex.Store({
         isAdmin: false,
         userInformation: null,
         gameTitle: null,
+        gameCode: null
 
     },
     mutations: {
@@ -43,6 +44,9 @@ export default new Vuex.Store({
        },
        setGameTitle(state, title) {
            state.gameTitle = title
+       },
+       setGameCode(state, code) {
+           state.gameCode = code
        },
        loggedUser(state, loggedUser) {
            state.loggedUser = loggedUser
@@ -71,6 +75,9 @@ export default new Vuex.Store({
         },
         setGameTitle( { commit }, title) {
             commit('setGameTitle', title)
+        },
+        setGameCode( { commit }, code) {
+            commit('setGameCode', code)
         },
         logOut({commit}) {
             commit("logOut")

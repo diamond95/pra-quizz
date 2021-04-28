@@ -398,7 +398,8 @@ export default {
       showPinBox: true,
       showNicknameBox: false,
       gameNickname: "",
-      newGame: null
+      newGame: null,
+      guestToken: null
     };
   },
 
@@ -465,9 +466,9 @@ export default {
           await AuthService.joinGame({
             game_pin: this.gamePin,
           })
-        ).data.res;
-
-        this.gameFoundTitle = this.newGame.title;
+        ).data;
+        this.guestToken = this.newGame.token
+        this.gameFoundTitle = this.newGame.res.title;
         this.showPinBox = false;
         this.showNicknameBox = true;
       } catch (error) {
@@ -487,11 +488,11 @@ export default {
         this.joinGameError = `Unesite nadimak.`
         return;
       }
-
-      this.$store.dispatch("setToken", "provjeritistosovimovdje");
+      
+      this.$store.dispatch("setToken", this.guestToken);
       this.$store.dispatch("loggedUser", this.gameNickname);
       this.$store.dispatch("setGameTitle", this.gameFoundTitle);
-
+      this.$store.dispatch("setGameCode", this.gamePin)
 
       this.$router.push({
         name: 'PlayGame'

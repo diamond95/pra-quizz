@@ -6,7 +6,7 @@ module.exports = function(req, res,  next) {
         
         if(err || !user) {
             res.status(403).send({
-                error: 'Nisi autoriziran za ovu akciju.'
+                error: `Nisi autoriziran za ovu akciju.${err} - ${user}`
             })
         } else {
         

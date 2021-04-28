@@ -1,47 +1,59 @@
 <template>
-  <div></div>
+
+    <v-progress-linear v-model="value" :active="show" class="pull-down"></v-progress-linear>
+
 </template>
-<style>
-.vs-notification__content {
-  font-family: "Poppins", sans-serif;
+
+<style scoped>
+.empty-size {
+  height: 48px !important;
+}
+.empty_space[data-v-62e6b27a] {
+  height: 15px;
 }
 </style>
+
+
 <script>
 export default {
+  name: "Progress-linear",
   props: {
-    titleProp: String,
-    textProp: String
+    emptySpace: Boolean
   },
 
-  destroyed() {
-    this.$emit("event-update-dialog", false);
+  data() {
+    return {
+      value: 0,
+      show: true,
+      interval: 0
+    };
   },
-  created() {
-    this.openNotification(
-      null,
-      "#bf5858",
-      "#964545",
-      `<i class='bx bxs-error'></i>`
-    );
+  mounted() {
+    this.queryAndIndeterminate();
   },
-  beforeUpdate() {
-    this.openNotification(null, "danger", `<i class='bx bxs-error'></i>`);
+
+  beforeDestroy() {
+    clearInterval(this.interval);
   },
+
   methods: {
-    openNotification(position = null, color, border) {
-      this.$vs.notification({
-        flat: true,
-        color,
-        border,
-        position,
-        progress: "auto",
-        title: this.titleProp,
-        text: this.textProp,
-        onDestroy: () => {
-          this.$destroy();
+    queryAndIndeterminate() {
+      this.show = true;
+      this.value = 0;
+
+      this.interval = setInterval(() => {
+        if (this.value === 100) {
+          clearInterval(this.interval);
+          this.show = false;
         }
-      });
+        this.value += 2.5;
+      }, 40);
     }
+    /*showOverlay() {
+      setTimeout(() => {
+        this.overlay = false;
+      }, 700);
+    }*/
   }
 };
 </script>

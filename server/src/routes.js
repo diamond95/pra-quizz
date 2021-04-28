@@ -6,7 +6,7 @@
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const isAuthenticated = require('./policies/isAuthenticated')
-
+const QuizzController = require('./controllers/QuizzController')
 
 module.exports = (app) => {
 
@@ -45,6 +45,18 @@ module.exports = (app) => {
      * @method POST
      */
     app.post('/joinGame', AuthController.joinGame)
+
+    /////////////////////////////////////////////////////////////////////
+    ///                                                                //
+    ///                          Quizz                                 //
+    ///                                                                //
+    /////////////////////////////////////////////////////////////////////
+
+    /**
+     * @description Get quizz information
+     * @method POST
+     */
+     app.post('/getQuizzInformation', isAuthenticated, QuizzController.getQuizzInformation)
 
 
 

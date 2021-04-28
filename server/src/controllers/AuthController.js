@@ -21,7 +21,7 @@ function jwtSignUser(user) {
   const ONE_DAY = 60 * 60 * 24
 
   return jwt.sign(user, config.authentication.jwtSecret, {
-   // expiresIn: ONE_DAY
+   expiresIn: ONE_DAY
   })
 }
 
@@ -107,7 +107,6 @@ module.exports = {
 
       const userJson = JSON.parse(JSON.stringify(x8))
 
-
       res.send({
         user: userJson,
         token: jwtSignUser(userJson)
@@ -130,9 +129,17 @@ module.exports = {
           error: 'Igra ne postoji ili nije aktivna!'
         })
       }
+      var signGuestJWT = {
+        IDUser: 2,
+        email: 'test@test.com',
+        username: 'guest',
+        password: '$2b$10$jMneRq9bBukgqbIshkvwn.kZTwDnIU87Ep9ua1FOICkqat4c11d..'
+      }
+      const guestJson = JSON.parse(JSON.stringify(signGuestJWT))
 
       res.send({
-        res: pin
+        res: pin,
+        token: jwtSignUser(guestJson)
       })
 
     } catch (error) {

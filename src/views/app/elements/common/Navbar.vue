@@ -75,8 +75,9 @@
   background-image: linear-gradient(
     111.1deg,
     rgba(0, 40, 70, 1) -4.8%,
-    rgba(255, 115, 115, 1) 82.7%,
-    rgba(255, 175, 123, 1) 97.2%
+    rgba(0, 176, 155, 0.9) 47.2%,
+    rgba(150, 201, 61, 1) 99.7%
+    
   );
 }
 .languageSelection {
