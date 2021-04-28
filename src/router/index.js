@@ -4,7 +4,6 @@ import HomePage from '../views/HomePage.vue'
 
 Vue.use(VueRouter)
 
-/* change every meta for authorization, missing backend token and loggedIn user */
 const routes = [
 
   {
@@ -15,16 +14,16 @@ const routes = [
   },
 
   {
-    path: '/',
-    name: 'Login',
-    component: () => import(/* webpackChunkName: "Login" */ '../views/Login.vue'),
-    meta: { auth: false, isAdmin: false }
+    path: '/app/play',
+    name: 'PlayGame',
+    component: () => import(/* webpackChunkName: "PlayGame" */ '../views/app/PlayGame.vue'),
+    meta: { auth: true, isAdmin: false }
   },
 
   {
     path: '/app/home',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "Catalog" */ '../views/app/Home.vue'),
+    component: () => import(/* webpackChunkName: "AdministrationBoard" */ '../views/app/Home.vue'),
     meta: { auth: false, isAdmin: false }
   },
 

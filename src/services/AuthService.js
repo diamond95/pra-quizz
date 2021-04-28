@@ -31,5 +31,9 @@ export default {
         return Api().post('login', credentials)
     },
 
+    joinGame (game_pin) {
+        return Api().post('joinGame', game_pin)
+    }
+
    
 }

@@ -56,7 +56,7 @@ module.exports = {
       var hashedPassword = await generateHash(password);      
       
       var [user] = await db.query('INSERT INTO users SET email = ?, username = ?, password = ?', [email, username, hashedPassword]);
-
+      
       const userJson = { email, username }
       res.send({
         user: userJson,
@@ -117,6 +117,29 @@ module.exports = {
     }
 
   },
+
+  async joinGame(req, res) {
+
+    try {
+      const { game_pin } = req.body
+
+      var [[pin]] = await db.query('SELECT title FROM quiz WHERE pin = ?', [game_pin])
+
+      if(!pin) {
+        return res.status(403).send({
+          error: 'Igra ne postoji ili nije aktivna!'
+        })
+      }
+
+      res.send({
+        res: pin
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  }
 
   
 

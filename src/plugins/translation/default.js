@@ -14,7 +14,9 @@ export default {
                 password: 'Password',
                 reset_password: 'Can\'t login?',
                 game_pin: 'Game PIN',
-                game_enter: 'ENTER'
+                game_enter: 'ENTER',
+                game_nickname: 'Enter Nickname',
+                game_join: 'PLAY NOW'
             },
             footer_description: '© Quizz.hr. Create your own quizz for FREE after registration!',
             footer_language: 'Switch to:',
@@ -45,7 +47,9 @@ export default {
                 password: 'Lozinka',
                 reset_password: 'Zaboravio si lozinku?',
                 game_pin: 'PIN igre',
-                game_enter: 'IGRAJ'
+                game_enter: 'OK',
+                game_nickname: 'Unesi nadimak',
+                game_join: 'IGRAJ'
             },
             footer_description: '© Quizz.hr. Kreiraj svoj kviz besplatno nakon registracije!',
             footer_language: 'Prebaci na:',

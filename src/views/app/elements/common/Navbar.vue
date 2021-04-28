@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-app-bar app class="navbar-color" dense :elevation="11" clipped-left :hide-on-scroll="false">
-      <v-app-bar-nav-icon class="white--text"></v-app-bar-nav-icon>
-      <v-toolbar-title class="white--text">Super QUIZZ</v-toolbar-title>
+      <v-icon class="white--text">{{ mdiFrequentlyAskedQuestions}}</v-icon>
+      <v-toolbar-title class="white--text ml-10">{{ gameTitle }}</v-toolbar-title>
       <v-spacer />
       <v-menu transition="slide-y-transition" bottom offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-toolbar-title class="name" color="darken-4" v-bind="attrs" v-on="on">
-            ivan miljanic
+            {{ nickname }}
             <v-icon medium color="darken-4">{{ mdiChevronDown }}</v-icon>
           </v-toolbar-title>
         </template>
@@ -26,10 +26,10 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <!-- <v-toolbar-title class="name" color="darken-2">ivan miljanic</v-toolbar-title> -->
+      
     </v-app-bar>
 
-    <v-navigation-drawer color="grey lighten-3" v-model="drawer" app clipped>
+    <!-- <v-navigation-drawer color="grey lighten-3" v-model="drawer" app clipped>
       <v-list dense rounded>
         <v-list-item link @click="$router.push({ name: 'Calendar'})">
           <v-list-item-action>
@@ -66,16 +66,8 @@
           </v-list-item-content>
         </v-list-item>
         
-  
-
-        <!-- <v-list-item link>
-          <v-list-item-action>
-            <v-icon color="grey darken-1">mdi-cog</v-icon>
-          </v-list-item-action>
-          <v-list-item-title class="grey--text text--darken-1">Opcije</v-list-item-title>
-        </v-list-item>-->
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
   </div>
 </template>
 <style scoped>
@@ -103,9 +95,9 @@
 </style>
 
 <script>
-import { mdiChevronDown, mdiCogOutline, mdiBookOpenPageVariant } from "@mdi/js";
+import { mdiChevronDown, mdiCogOutline, mdiBookOpenPageVariant, mdiFrequentlyAskedQuestions } from "@mdi/js";
 import { mdiFileDocumentOutline, mdiChartBubble, mdiFinance } from "@mdi/js";
-
+import store from "@/store/store"
 export default {
   components: {
     
@@ -123,28 +115,15 @@ export default {
     mdiChartBubble,
     mdiChevronDown,
     mdiCogOutline,
+    mdiFrequentlyAskedQuestions,
     dialog: false,
     drawer: null,
     version: "",
-    loggedUser: "" + " ",
-    labelKeys: [
-      "NAVBAR_INFORMATION_LABEL",
-      "NAVBAR_INFORMATION_BODY",
-      "NAVBAR_INFORMATION_LANGUAGE_LABEL"
-    ],
-    labelData: {},
-    o: {},
+    
     okBtnLoading: false,
     items: [{ title: "Odjava" }],
-
-    itemz: [
-      { icon: "mdi-trending-up", text: "Most Popular" },
-      { icon: "mdi-youtube-subscription", text: "Subscriptions" },
-      { icon: "mdi-history", text: "History" },
-      { icon: "mdi-playlist-play", text: "Playlists" },
-      { icon: "mdi-clock", text: "Watch Later" }
-    ],
-    
+    nickname: store.state.loggedUser,
+    gameTitle: store.state.gameTitle
   }),
 
   methods: {

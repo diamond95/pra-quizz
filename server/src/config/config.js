@@ -6,9 +6,9 @@
 module.exports = {
     port: 8080,
     db: {
-        database: "pra_quizz" || process.env.DB_NAME,
-        user: 'quizz_user' || process.env.DB_USER,
-        password: 'z>yC3VB8rD' || process.env.DB_PASS,
+        database: "quizz" || process.env.DB_NAME,
+        user: 'root' || process.env.DB_USER,
+        password: '' || process.env.DB_PASS,
         driver: "mysql",
 
         options: {

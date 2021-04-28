@@ -3,8 +3,11 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import VueI18n from 'vue-i18n'
+import Vuesax from 'vuesax'
+import 'vuesax/dist/vuesax.css'
 
 Vue.use(VueI18n)
+Vue.use(Vuesax)
 
 import { sync } from 'vuex-router-sync'
 import AOS from 'aos'
@@ -14,6 +17,8 @@ import vuetify from './plugins/vuetify';
 import store from '@/store/store'
 import defaultTranslation from '@/plugins/translation/default.js'
 import 'material-icons/iconfont/material-icons.css';
+import 'vuesax/dist/vuesax.css'
+
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
@@ -46,7 +51,7 @@ new Vue({
     router,
     
     vuetify,
-    
+    Vuesax,
     i18n,
     render: h => h(App)
 }).$mount('#app')

@@ -40,6 +40,12 @@ module.exports = (app) => {
     // removed policy for authentication, joi AuthControllerPolicy.login,
     app.post('/login',  AuthController.login)
 
+    /**
+     * @description Join game via PIN
+     * @method POST
+     */
+    app.post('/joinGame', AuthController.joinGame)
+
 
 
   

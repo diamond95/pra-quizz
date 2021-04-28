@@ -111,7 +111,13 @@
     <!-- end login -->
 
     <!--Register-->
-    <form action="" method="POST" name="register" autocomplete="off" @keydown.enter="userRegistration">
+    <form
+      action=""
+      method="POST"
+      name="register"
+      autocomplete="off"
+      @keydown.enter="userRegistration"
+    >
       <div class="register-box-area">
         <div id="register" class="fade">
           <a href="#" class="close-btn-white">
@@ -153,7 +159,11 @@
             <br />
             <li>
               <div class="login">
-                <button type="button" @click="userRegistration" class="registerform-btn">
+                <button
+                  type="button"
+                  @click="userRegistration"
+                  class="registerform-btn"
+                >
                   <i class="fa fa-user"></i> {{ $t("homePage.register_btn") }}
                 </button>
               </div>
@@ -237,21 +247,78 @@
           </a>
           <ul>
             <li>
+              <h2
+                class="white--text"
+                v-if="gameFoundTitle != null"
+                data-aos="fade-in"
+                data-aos-anchor-placement="top-bottom"
+                data-aos-delay="600"
+                data-aos-duration="1200"
+              >
+                {{ gameFoundTitle }}
+              </h2>
+            </li>
+            <br />
+            <br />
+            <li v-if="showPinBox">
               <input
+                v-model="gamePin"
+                @keypress="clearErrorLogs"
                 type="text"
                 class="input-username"
                 v-bind:placeholder="$t('homePage.fade_screen.game_pin')"
               />
             </li>
-
             <br />
-            <li>
+            <li v-if="showPinBox">
               <div class="login">
-                <button type="button" class="registerform-btn" @click="joinGame">
+                <button
+                  type="button"
+                  class="registerform-btn"
+                  @click="joinGame"
+                >
                   <i class="fa fa-user"></i>
                   {{ $t("homePage.fade_screen.game_enter") }}
                 </button>
               </div>
+            </li>
+            <li
+              v-if="showNicknameBox"
+              data-aos="fade-in"
+              data-aos-anchor-placement="top-bottom"
+              data-aos-delay="1200"
+              data-aos-duration="1200"
+            >
+              <input
+                v-model="gameNickname"
+                type="text"
+                class="input-username"
+                v-bind:placeholder="$t('homePage.fade_screen.game_nickname')"
+              />
+            </li>
+
+            <br />
+            <li
+              v-if="showNicknameBox"
+              data-aos="fade-in"
+              data-aos-anchor-placement="left-right"
+              data-aos-delay="1200"
+              data-aos-duration="1200"
+            >
+              <div class="login">
+                <button
+                  type="button"
+                  class="registerform-btn"
+                  @click="playGame"
+                >
+                  <i class="fa fa-user"></i>
+                  {{ $t("homePage.fade_screen.game_join") }}
+                </button>
+              </div>
+            </li>
+            <br />
+            <li>
+              <p class="white--text">{{ joinGameError }}</p>
             </li>
           </ul>
         </div>
@@ -304,7 +371,7 @@
 
 <script>
 import { mdiChevronDown, mdiCogOutline, mdiTranslate } from "@mdi/js";
-import AuthService from '@/services/AuthService'
+import AuthService from "@/services/AuthService";
 export default {
   name: "HomePage",
   data() {
@@ -320,11 +387,18 @@ export default {
       },
       login: {
         username: "",
-        password: ""
+        password: "",
       },
       langs: this.$i18n.messages[this.$i18n.locale].homePage.languages,
       error: null,
       errorLogin: null,
+      gamePin: "",
+      joinGameError: null,
+      gameFoundTitle: null,
+      showPinBox: true,
+      showNicknameBox: false,
+      gameNickname: "",
+      newGame: null
     };
   },
 
@@ -332,53 +406,97 @@ export default {
     toggleLanguage: function () {
       this.langs = this.$i18n.messages[this.$i18n.locale].homePage.languages;
     },
-    userRegistration: async function() {
-      if(this.registration.email.length < 1 || this.registration.username < 1 || this.registration.password < 1) {
-        this.error = `Sva polja su obavezna!`; 
+    userRegistration: async function () {
+      if (
+        this.registration.email.length < 1 ||
+        this.registration.username < 1 ||
+        this.registration.password < 1
+      ) {
+        this.error = `Sva polja su obavezna!`;
         return;
       }
 
       try {
-          const registration = (await AuthService.register(this.registration));
-          if(registration.status == 200) {
-            this.error = `Uspješno ste kreirali račun! Sada se možete prijaviti.`
-          }
-      } catch (error) {
-        this.error = error.response.data.error
-      }
-    },
-    userLogin: async function() {
-      if(this.login.username < 1 || this.login.password < 1) {
-        this.errorLogin = `Sva polja su obavezna!`; 
-        return;
-      }
-
-      try {
-        const login = (await AuthService.login(this.login));
-        if(login.status == 200) {
-          this.errorLogin = ``
-
-          await this.setAuthStore(login)
-
-          this.$router.push({
-            name: 'Home'
-          })
-          // TODO - save token, user information into vuex for auth meta tags
+        const registration = await AuthService.register(this.registration);
+        if (registration.status == 200) {
+          this.error = `Uspješno ste kreirali račun! Sada se možete prijaviti.`;
         }
       } catch (error) {
-        this.errorLogin = error.response.data.error
+        this.error = error.response.data.error;
+      }
+    },
+    userLogin: async function () {
+      if (this.login.username < 1 || this.login.password < 1) {
+        this.errorLogin = `Sva polja su obavezna!`;
+        return;
+      }
+
+      try {
+        const login = await AuthService.login(this.login);
+        if (login.status == 200) {
+          this.errorLogin = ``;
+
+          await this.setAuthStore(login);
+
+          this.$router.push({
+            name: "Home",
+          });
+        }
+      } catch (error) {
+        this.errorLogin = error.response.data.error;
       }
     },
 
-    setAuthStore: async function(res) {
-      this.$store.dispatch("setToken", res.data.token)
-      this.$store.dispatch("setUser", res.data.user)
-      this.$store.dispatch("loggedUser", this.login.username)
-      this.$store.dispatch("setUserInformation", res.data)
+    setAuthStore: async function (res) {
+      this.$store.dispatch("setToken", res.data.token);
+      this.$store.dispatch("setUser", res.data.user);
+      this.$store.dispatch("loggedUser", this.login.username);
+      this.$store.dispatch("setUserInformation", res.data);
     },
 
-    joinGame: function() {
-      // todo
+    joinGame: async function () {
+      if (this.gamePin.length < 5) {
+        this.joinGameError = `PIN mora biti minimalno 5 znakova.`;
+        return;
+      }
+
+      try {
+        this.newGame = (
+          await AuthService.joinGame({
+            game_pin: this.gamePin,
+          })
+        ).data.res;
+
+        this.gameFoundTitle = this.newGame.title;
+        this.showPinBox = false;
+        this.showNicknameBox = true;
+      } catch (error) {
+        this.joinGameError = error.response.data.error;
+      }
+    },
+
+    clearErrorLogs() {
+      this.gameFoundTitle = null;
+      this.joinGameError = null;
+      this.errorLogin = null;
+      this.error = null;
+    },
+
+    playGame() {
+      if(!this.gameNickname.length > 0 || this.newGame == null) {
+        this.joinGameError = `Unesite nadimak.`
+        return;
+      }
+
+      this.$store.dispatch("setToken", "provjeritistosovimovdje");
+      this.$store.dispatch("loggedUser", this.gameNickname);
+      this.$store.dispatch("setGameTitle", this.gameFoundTitle);
+
+
+      this.$router.push({
+        name: 'PlayGame'
+      })
+
     }
   },
 
