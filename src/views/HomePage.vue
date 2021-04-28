@@ -239,7 +239,7 @@
     </section>
 
     <!--Join game-->
-    <form action="" method="POST" name="join-game" @keydown.enter="joinGame">
+    <form action="" method="POST" name="join-game">
       <div class="register-box-area">
         <div id="join-game" class="fade">
           <a href="#" class="close-btn-white">
@@ -264,6 +264,7 @@
               <input
                 v-model="gamePin"
                 @keypress="clearErrorLogs"
+                ref="gamePinRef"
                 type="text"
                 class="input-username"
                 v-bind:placeholder="$t('homePage.fade_screen.game_pin')"
@@ -292,6 +293,7 @@
               <input
                 v-model="gameNickname"
                 type="text"
+                
                 class="input-username"
                 v-bind:placeholder="$t('homePage.fade_screen.game_nickname')"
               />
@@ -503,6 +505,12 @@ export default {
 
   created() {
     setTimeout(() => (this.elementVisible = false), 1000);
+   
   },
+
+  mounted() {
+    //console.log(this.$refs)
+  }
+  
 };
 </script>
