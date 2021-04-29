@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import hr from './translation/hr';
+import '@mdi/font/css/materialdesignicons.css'
 //import store from '@/store/store'
 Vue.use(Vuetify);
 

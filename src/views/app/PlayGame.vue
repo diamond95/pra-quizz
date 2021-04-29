@@ -2,9 +2,18 @@
   <v-main class="grey lighten-5">
     <Navbar :catalogSubgroupValue="false" />
     <Progress :emptySpace="false" />
-    <QuizzInformation />
-    <Questions />
+    <v-row>
+      <v-col cols="12" md="2" lg="2" sm="2">
+        <QuizzInformation />
+      </v-col>
+      <v-col cols="12" md="9" lg="9" sm="9"><Questions /></v-col>
+    </v-row>
 
+    <v-row>
+      <v-col cols="12" md="2" lg="2" sm="2">
+        <LeaderBoard />
+      </v-col>
+    </v-row>
   </v-main>
 </template>
 
@@ -12,17 +21,18 @@
 </style>
 
 <script>
-
 import Navbar from "./elements/common/Navbar";
-import Questions from './elements/game/Questions'
-import QuizzInformation from './elements/game/QuizzInformation'
+import Questions from "./elements/game/Questions";
+import QuizzInformation from "./elements/game/QuizzInformation";
+import LeaderBoard from "./elements/game/LeaderBoard";
 import Progress from "./elements/common/Progress";
 export default {
   components: {
     Navbar,
     Progress,
     QuizzInformation,
-    Questions
-  }
+    LeaderBoard,
+    Questions,
+  },
 };
 </script>

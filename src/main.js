@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import VueI18n from 'vue-i18n'
-import Vuesax from 'vuesax'
+import Vuesax from 'vuesax' // check error 
 import 'vuesax/dist/vuesax.css'
 
 Vue.use(VueI18n)
@@ -13,10 +13,9 @@ import { sync } from 'vuex-router-sync'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import vuetify from './plugins/vuetify';
-//import '@babel/polyfill'
 import store from '@/store/store'
 import defaultTranslation from '@/plugins/translation/default.js'
-import 'material-icons/iconfont/material-icons.css';
+
 import 'vuesax/dist/vuesax.css'
 
 

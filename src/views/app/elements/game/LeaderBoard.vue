@@ -1,15 +1,14 @@
 <template>
-
-    <v-card class="mt-10" outlined shaped elevation="4">
+    <v-card outlined shaped elevation="4" class="mt-10">
       <v-alert
         color="secondary"
         dark
-        :icon="mdiHelpCircleOutline"
+        :icon="mdiClipboardListOutline "
         border="left"
         prominent
         dense
       >
-        <h2 color="secondary" class="mt-2">{{ quizzInformation.title }}</h2>
+        <h2 color="secondary" class="mt-2">Leaderboard</h2>
       </v-alert>
       <v-list>
         <v-list-item link>
@@ -64,14 +63,14 @@
 <script>
 import store from "@/store/store";
 import QuizService from "@/services/QuizzService";
-import { mdiHelpCircleOutline } from "@mdi/js";
+import { mdiClipboardListOutline  } from "@mdi/js";
 export default {
-  name: "QuestionsCard",
+  name: "LeaderBoard",
 
   data: () => ({
     quizzCode: store.state.gameCode,
     quizzInformation: {},
-    mdiHelpCircleOutline,
+    mdiClipboardListOutline ,
     selectedItem: 1,
     items: [
       { text: "Real-Time", icon: "mdi-clock" },
