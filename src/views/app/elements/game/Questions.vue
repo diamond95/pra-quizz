@@ -139,7 +139,9 @@ export default {
     answersError: null,
     questionAnswered: [],
     completedPercentage: 0,
-    quizStarted: true,
+    quizStarted: false,
+    intervalUpdater: false,
+    intervalid7: undefined,
   }),
 
   methods: {
@@ -160,7 +162,6 @@ export default {
       }
     },
     getQuestion: async function () {
-      this.quizStarted = true;
       var gameCode = store.state.gameCode;
       try {
         this.question = (
@@ -192,9 +193,36 @@ export default {
     calculatePercentage(partialValue, totalValue) {
       return (100 * partialValue) / totalValue;
     },
+    DOMUpdateActiveQuiz: function () {
+      //const self = this;
+      this.intervalid7 = setInterval(this.timer, 3000);
+    },
+    async timer() {
+      var quiz = (
+        await QuizzService.isActiveQuizz({
+          gameCode: store.state.gameCode,
+        })
+      ).data.res;
+
+      if (quiz.active == 1) {
+        this.stopTimer();
+      }
+    },
+    stopTimer() {
+      clearInterval(this.intervalid7); // will be a harmless no-op if myDisco is false
+      this.quizStarted = true;
+    },
   },
 
-  created() {},
+  created() {
+    this.DOMUpdateActiveQuiz();
+  },
+
+  beforeUpdate() {
+    this.$nextTick(() => {
+      console.log("beforeUpdate");
+    });
+  },
 
   computed: {
     routeChanged: function () {

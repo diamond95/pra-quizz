@@ -62,13 +62,19 @@ module.exports = (app) => {
      * @description Get question
      * @method POST
      */
-      app.post('/getQuestion', isAuthenticated, QuizzController.getQuestion)
+    app.post('/getQuestion', isAuthenticated, QuizzController.getQuestion)
 
-      /**
-     * @description Get answers
-     * @method POST
-     */
-       app.post('/getAnswers', isAuthenticated, QuizzController.getAnswers)
+    /**
+    * @description Get answers
+    * @method POST
+    */
+    app.post('/getAnswers', isAuthenticated, QuizzController.getAnswers)
+
+    /**
+    * @description Check if quizz is active
+    * @method POST
+    */
+     app.post('/isActiveQuizz', isAuthenticated, QuizzController.isActiveQuizz)
 
 
 

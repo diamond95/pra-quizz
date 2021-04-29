@@ -81,6 +81,29 @@
     }
 
   },
+
+   async isActiveQuizz(req, res) {
+ 
+    try {
+      const { gameCode } = req.body
+
+      var [[ac]] = await db.query('SELECT active FROM quiz WHERE pin = ?', [gameCode])
+
+      if(!ac) {
+        return res.status(403).send({
+          error: 'Oops, something went wrong.'
+        })
+      }
+
+      res.send({
+        res: ac
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
  
    
  

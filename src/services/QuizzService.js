@@ -16,6 +16,9 @@
     },
     getAnswers(gameInformation) {
         return Api().post('getAnswers', gameInformation)
+    },
+    isActiveQuizz(gameInformation) {
+        return Api().post('isActiveQuizz', gameInformation)
     }
  
     
