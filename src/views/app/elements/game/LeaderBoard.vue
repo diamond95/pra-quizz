@@ -87,7 +87,6 @@ export default {
         })
       ).data.res;
 
-      console.log(this.quizzInformation);
     },
   },
 

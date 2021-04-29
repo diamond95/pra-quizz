@@ -10,7 +10,13 @@
  
     getQuizzInformation (game_pin) {
          return Api().post('getQuizzInformation', game_pin)
-     }
+    },
+    getQuestion(gameInformation) {
+        return Api().post('getQuestion', gameInformation)
+    },
+    getAnswers(gameInformation) {
+        return Api().post('getAnswers', gameInformation)
+    }
  
     
  }

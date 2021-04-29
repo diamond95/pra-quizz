@@ -33,7 +33,54 @@
        ErrorHandling.status500(res, error)
      }
  
-   }
+   },
+
+
+   async getQuestion(req, res) {
+ 
+    try {
+      const { gameCode, questionNumber } = req.body
+
+      var [[q]] = await db.query('SELECT q.description, q.difficulty, q.time, q.answered FROM question as q INNER JOIN quiz as qu on qu.IDQuiz = q.quizID where qu.pin = ? AND q.answered != 1 AND q.question_order = ? AND q.started = 1', [gameCode, questionNumber])
+
+      if(!q) {
+        return res.status(403).send({
+          error: 'Looks like question is not started yet!'
+        })
+      }
+
+      res.send({
+        res: q
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
+   async getAnswers(req, res) {
+ 
+    try {
+      const { gameCode, questionNumber } = req.body
+
+      var [a] = await db.query('SELECT a.IDAnswer, a.description FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID      WHERE qu.pin = ? AND a.questionID = ?', [gameCode, questionNumber])
+
+      if(!a) {
+        return res.status(403).send({
+          error: 'Oops, something went wrong.'
+        })
+      }
+
+      res.send({
+        res: a
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
  
    
  

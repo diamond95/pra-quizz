@@ -21,6 +21,13 @@ const routes = [
   },
 
   {
+    path: '/app/play/:id',
+    name: 'LiveQuizz',
+    component: () => import(/* webpackChunkName: "LiveQuizz" */ '../views/app/PlayGame.vue'),
+    meta: { auth: true, isAdmin: false }
+  },
+
+  {
     path: '/app/home',
     name: 'Home',
     component: () => import(/* webpackChunkName: "AdministrationBoard" */ '../views/app/Home.vue'),

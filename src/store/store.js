@@ -24,7 +24,8 @@ export default new Vuex.Store({
         isAdmin: false,
         userInformation: null,
         gameTitle: null,
-        gameCode: null
+        gameCode: null,
+        questionSum: null
 
     },
     mutations: {
@@ -47,6 +48,9 @@ export default new Vuex.Store({
        },
        setGameCode(state, code) {
            state.gameCode = code
+       },
+       setQuestionSum(state, total) {
+           state.questionSum = total
        },
        loggedUser(state, loggedUser) {
            state.loggedUser = loggedUser
@@ -78,6 +82,9 @@ export default new Vuex.Store({
         },
         setGameCode( { commit }, code) {
             commit('setGameCode', code)
+        },
+        setQuestionSum( { commit }, total) {
+            commit('setQuestionSum', total)
         },
         logOut({commit}) {
             commit("logOut")

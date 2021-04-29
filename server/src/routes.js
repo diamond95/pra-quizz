@@ -58,6 +58,18 @@ module.exports = (app) => {
      */
      app.post('/getQuizzInformation', isAuthenticated, QuizzController.getQuizzInformation)
 
+     /**
+     * @description Get question
+     * @method POST
+     */
+      app.post('/getQuestion', isAuthenticated, QuizzController.getQuestion)
+
+      /**
+     * @description Get answers
+     * @method POST
+     */
+       app.post('/getAnswers', isAuthenticated, QuizzController.getAnswers)
+
 
 
   

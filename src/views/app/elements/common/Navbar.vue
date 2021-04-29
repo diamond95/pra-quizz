@@ -2,7 +2,7 @@
   <div>
     <v-app-bar app class="navbar-color" dense :elevation="11" clipped-left :hide-on-scroll="false">
       <v-icon class="white--text">{{ mdiFrequentlyAskedQuestions}}</v-icon>
-      <v-toolbar-title class="white--text ml-10">{{ gameTitle }}</v-toolbar-title>
+      <v-toolbar-title class="white--text ml-10">Super Quizz</v-toolbar-title>
       <v-spacer />
       <v-menu transition="slide-y-transition" bottom offset-y>
         <template v-slot:activator="{ on, attrs }">

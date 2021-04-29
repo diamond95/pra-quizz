@@ -495,7 +495,7 @@ export default {
       this.$store.dispatch("loggedUser", this.gameNickname);
       this.$store.dispatch("setGameTitle", this.gameFoundTitle);
       this.$store.dispatch("setGameCode", this.gamePin)
-
+      
       this.$router.push({
         name: 'PlayGame'
       })

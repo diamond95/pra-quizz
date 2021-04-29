@@ -5,15 +5,12 @@
     <v-row>
       <v-col cols="12" md="2" lg="2" sm="2">
         <QuizzInformation />
+        
+        <LeaderBoard />
       </v-col>
       <v-col cols="12" md="9" lg="9" sm="9"><Questions /></v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="12" md="2" lg="2" sm="2">
-        <LeaderBoard />
-      </v-col>
-    </v-row>
   </v-main>
 </template>
 

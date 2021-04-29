@@ -1,6 +1,6 @@
 <template>
 
-    <v-card class="mt-10" outlined shaped elevation="4">
+    <v-card class="mt-12" outlined shaped elevation="4">
       <v-alert
         color="secondary"
         dark
@@ -72,12 +72,6 @@ export default {
     quizzCode: store.state.gameCode,
     quizzInformation: {},
     mdiHelpCircleOutline,
-    selectedItem: 1,
-    items: [
-      { text: "Real-Time", icon: "mdi-clock" },
-      { text: "Audience", icon: "mdi-account" },
-      { text: "Conversions", icon: "mdi-flag" },
-    ],
   }),
 
   methods: {
@@ -88,7 +82,7 @@ export default {
         })
       ).data.res;
 
-      console.log(this.quizzInformation);
+      this.$store.dispatch('setQuestionSum', this.quizzInformation.questions_sum)
     },
   },
 
