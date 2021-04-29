@@ -3,7 +3,7 @@
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
-    <v-card outlined class="mt-5" elevation="4">
+    <v-card outlined class="mt-5" elevation="4" v-if="quizStarted">
       <v-alert color="secondary" dark border="bottom">
         <h3 color="secondary" class="mt-2">
           {{ routeChanged.id }}. {{ question.description }}
@@ -43,13 +43,14 @@
       <v-list two-line>
         <v-list-item-group
           v-model="questionAnswered"
-          active-class="primary--text"
+          active-class="secondary--text"
           multiple
-        >   
-        <v-divider></v-divider>
-          <template v-for="item in answers">
+        >
+          <v-divider></v-divider>
+          <template v-for="(item, index) in answers">
             <v-list-item :key="item.IDAnswer">
-              <template v-slot:default="{ active }">
+              <template v-slot:default="{}">
+                <!-- active u slot -->
                 <v-list-item-content>
                   <v-list-item-title
                     v-text="item.description"
@@ -61,20 +62,16 @@
                   ></v-list-item-subtitle>
                 </v-list-item-content>
 
-                <v-list-item-action>
+                <!-- <v-list-item-action>
                   <v-icon v-if="!active" color="grey lighten-1">
-                    mdi-star-outline
+                    mdi-check-circle-outline
                   </v-icon>
 
-                  <v-icon v-else color="yellow darken-3"> mdi-star </v-icon>
-                </v-list-item-action>
+                  <v-icon v-else color="green darken-3"> mdi-check-circle </v-icon>
+                </v-list-item-action> -->
               </template>
             </v-list-item>
-            <v-divider :key="item.IDAnswer"></v-divider>
-            <!-- <v-divider
-            v-if="index < items.length - 1"
-            :key="index"
-          ></v-divider> -->
+            <v-divider :key="index + 'DIVIDER'"></v-divider>
           </template>
         </v-list-item-group>
       </v-list>
@@ -84,14 +81,39 @@
         height="25"
         aria-disabled="true"
       >
-        <strong class="white--text">{{ Math.ceil(completedPercentage) }}%</strong>
+        <strong class="white--text"
+          >{{ Math.ceil(completedPercentage) }}%</strong
+        >
       </v-progress-linear>
     </v-card>
+    <v-container v-else>
+      <v-row justify="center">
+        <v-card outlined class="mt-5" elevation="4">
+          <v-alert
+            class="mb-0"
+            text
+            prominent
+            type="error"
+            icon="mdi-alert-circle-outline"
+          >
+            Kviz trenutno nije aktivan. Pričekajte dok host pokrene kviz...
+          </v-alert>
+        </v-card>
+      </v-row>
+      <v-row class="mt-16" justify="center">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="red lighten-2"
+          indeterminate
+        ></v-progress-circular>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 <style>
 .spacer-100 {
-    height: 100px;
+  height: 100px;
 }
 </style>
 <script>
@@ -117,6 +139,7 @@ export default {
     answersError: null,
     questionAnswered: [],
     completedPercentage: 0,
+    quizStarted: true,
   }),
 
   methods: {
@@ -137,6 +160,7 @@ export default {
       }
     },
     getQuestion: async function () {
+      this.quizStarted = true;
       var gameCode = store.state.gameCode;
       try {
         this.question = (
@@ -145,7 +169,10 @@ export default {
             questionNumber: this.$route.params.id,
           })
         ).data.res;
-        this.completedPercentage = this.calculatePercentage(this.routeChanged.id, store.state.questionSum)
+        this.completedPercentage = this.calculatePercentage(
+          this.routeChanged.id,
+          store.state.questionSum
+        );
       } catch (error) {
         this.questionError = error.response.data.error;
       }
@@ -163,10 +190,8 @@ export default {
       }
     },
     calculatePercentage(partialValue, totalValue) {
-        console.log(partialValue, totalValue)
-        console.log((100 * partialValue) / totalValue)
-        return (100 * partialValue) / totalValue;
-    }
+      return (100 * partialValue) / totalValue;
+    },
   },
 
   created() {},
@@ -174,9 +199,11 @@ export default {
   computed: {
     routeChanged: function () {
       this.showLoader();
-      this.getQuestion();
-      this.getAnswers();
-      
+      if (this.$route.params.id) {
+        this.getQuestion();
+        this.getAnswers();
+      }
+
       return this.$route.params;
     },
   },

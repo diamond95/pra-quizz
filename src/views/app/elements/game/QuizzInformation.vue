@@ -83,6 +83,7 @@ export default {
       ).data.res;
 
       this.$store.dispatch('setQuestionSum', this.quizzInformation.questions_sum)
+      this.$store.dispatch('setQuizInfo', this.quizzInformation)
     },
   },
 
