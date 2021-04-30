@@ -76,6 +76,12 @@ module.exports = (app) => {
     */
      app.post('/isActiveQuizz', isAuthenticated, QuizzController.isActiveQuizz)
 
+    /**
+    * @description Get correct answers
+    * @method POST
+    */
+     app.post('/validateSelectedAnswers', isAuthenticated, QuizzController.validateSelectedAnswers)
+
 
 
   

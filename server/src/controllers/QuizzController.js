@@ -104,6 +104,29 @@
     }
 
   },
+
+   async validateSelectedAnswers(req, res) {
+ 
+    try {
+      const { gameCode, questionNumber } = req.body
+
+      var [ac] = await db.query('SELECT a.IDAnswer, a.description, a.is_correct FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID      WHERE qu.pin = ? AND a.questionID = ?', [gameCode, questionNumber])
+
+      if(!ac) {
+        return res.status(403).send({
+          error: 'Oops, something went wrong.'
+        })
+      }
+
+      res.send({
+        res: ac
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
  
    
  

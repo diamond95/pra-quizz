@@ -44,10 +44,9 @@
             </v-badge>
           </v-alert>
           <div class="spacer-100"></div>
-
           <v-list two-line>
             <v-list-item-group
-              v-model="questionAnswered"
+              v-model="questionAnswersIndexes"
               active-class="secondary--text"
               multiple
             >
@@ -75,9 +74,17 @@
                         {{ mdiCheckboxCircle }}
                       </v-icon>
                     </v-list-item-action>
+                    
+                    <v-list-item-action v-else-if="questionOver && correctAnswers.length > 0 && correctAnswers[index].is_correct == 1">
+                      <v-icon color="green lighten-1">
+                        {{ mdiCheckboxCircleOutlineCorrect }}
+                      </v-icon>
+                      
+                    </v-list-item-action>
+
                     <v-list-item-action v-else>
-                      <v-icon color="green lighten-2">
-                        {{ mdiCheckboxCircleOutline }}
+                      <v-icon color="red lighten-1">
+                        {{ mdiWrongAnswer }}
                       </v-icon>
 
                     </v-list-item-action>
@@ -155,6 +162,8 @@ import {
   mdiSpeedometerSlow,
   mdiSpeedometerMedium,
   mdiSpeedometer,
+  mdiCloseThick,
+  mdiCheckBold  
 } from "@mdi/js";
 export default {
   name: "Questions",
@@ -171,7 +180,7 @@ export default {
     mdiSpeedometer,
     questionError: null,
     answersError: null,
-    questionAnswered: [],
+    questionAnswersIndexes: [],
     completedPercentage: 0,
     quizStarted: false,
     intervalUpdater: false,
@@ -179,8 +188,11 @@ export default {
     showNotActive: false,
     setTimeLeft: 0,
     mdiCheckboxCircleOutline: "mdi-checkbox-blank-circle-outline",
+    mdiCheckboxCircleOutlineCorrect: mdiCheckBold ,
     mdiCheckboxCircle: "mdi-checkbox-blank-circle",
+    mdiWrongAnswer: mdiCloseThick  ,
     questionOver: false,
+    correctAnswers: []
   }),
 
   methods: {
@@ -265,8 +277,35 @@ export default {
     },
     questionFinished: function () {
       this.questionOver = true
-      console.log(this.questionAnswered)
+  
+      var selectedAnswers = []
+      
+      this.questionAnswersIndexes.sort()
+      var z = 0
+      this.answers.forEach((element, index) => {
+
+        if(index == this.questionAnswersIndexes[z]) {
+          selectedAnswers.push(element)
+          z++
+        }
+      });
+
+      this.validateSelectedAnswers(selectedAnswers)
     },
+
+    async validateSelectedAnswers(answers) {
+      console.log(answers)
+      try {
+        this.correctAnswers = (await QuizzService.validateSelectedAnswers({
+          gameCode: store.state.gameCode,
+          questionNumber: this.$route.params.id
+        })).data.res
+
+      } catch (error) {
+        this.questionError = error.response.data.error
+      }
+    }
+    
   },
 
   created() {
