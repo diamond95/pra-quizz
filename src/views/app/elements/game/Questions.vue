@@ -66,13 +66,21 @@
                       ></v-list-item-subtitle>
                     </v-list-item-content>
 
-                    <v-list-item-action>
-                  <v-icon v-if="!active" color="black lighten-1">
-                    mdi-checkbox-blank-circle-outline
-                  </v-icon>
+                    <v-list-item-action v-if="!questionOver">
+                      <v-icon v-if="!active" color="secondary lighten-2">
+                        {{ mdiCheckboxCircleOutline }}
+                      </v-icon>
 
-                  <v-icon v-else color="black darken-3"> mdi-checkbox-blank-circle </v-icon>
-                </v-list-item-action>
+                      <v-icon v-else color="secondary darken-2">
+                        {{ mdiCheckboxCircle }}
+                      </v-icon>
+                    </v-list-item-action>
+                    <v-list-item-action v-else>
+                      <v-icon color="green lighten-2">
+                        {{ mdiCheckboxCircleOutline }}
+                      </v-icon>
+
+                    </v-list-item-action>
                   </template>
                 </v-list-item>
                 <v-divider :key="index + 'DIVIDER'"></v-divider>
@@ -91,7 +99,12 @@
           </v-progress-linear>
         </v-card>
       </v-col>
-      <v-col cols="12" md="1" lg="1" sm="1"><Timer :timeLeft.sync="setTimeLeft" @question-finished="questionFinished" v-if="setTimeLeft != 0" /></v-col>
+      <v-col cols="12" md="1" lg="1" sm="1"
+        ><Timer
+          :timeLeft.sync="setTimeLeft"
+          @question-finished="questionFinished"
+          v-if="setTimeLeft != 0"
+      /></v-col>
     </v-row>
 
     <v-container v-else-if="showNotActive">
@@ -137,7 +150,7 @@
 <script>
 import store from "@/store/store";
 import QuizzService from "@/services/QuizzService";
-import Timer from "./Timer"
+import Timer from "./Timer";
 import {
   mdiSpeedometerSlow,
   mdiSpeedometerMedium,
@@ -146,7 +159,7 @@ import {
 export default {
   name: "Questions",
   components: {
-    Timer
+    Timer,
   },
   data: () => ({
     overlay: false,
@@ -164,7 +177,10 @@ export default {
     intervalUpdater: false,
     intervalid7: undefined,
     showNotActive: false,
-    setTimeLeft: 0
+    setTimeLeft: 0,
+    mdiCheckboxCircleOutline: "mdi-checkbox-blank-circle-outline",
+    mdiCheckboxCircle: "mdi-checkbox-blank-circle",
+    questionOver: false,
   }),
 
   methods: {
@@ -197,8 +213,8 @@ export default {
           this.routeChanged.id,
           store.state.questionSum
         );
-        console.log(this.question)
-      this.setTimeLeft = this.question.time
+        
+        this.setTimeLeft = this.question.time;
       } catch (error) {
         this.questionError = error.response.data.error;
       }
@@ -236,26 +252,26 @@ export default {
       }
     },
     stopTimer() {
+      /* TODO - test this on production, possibly to fail loc.hash */
       clearInterval(this.intervalid7); // will be a harmless no-op if timer is false
       this.quizStarted = true;
       var startQuizURL = window.location.href;
-      location.href = startQuizURL + "/1";
+
+      if (!/play/.test(window.location.href)) {
+        /* regex for play/$num hash */
+        location.href = startQuizURL + "/1";
+      }
       
     },
-    questionFinished: function() {
-      console.log("finished...")
-    }
+    questionFinished: function () {
+      this.questionOver = true
+      console.log(this.questionAnswered)
+    },
   },
 
   created() {
     this.DOMUpdateActiveQuiz();
   },
-
-  // beforeUpdate() {
-  //   this.$nextTick(() => {
-  //     console.log("beforeUpdate");
-  //   });
-  // },
 
   computed: {
     routeChanged: function () {
