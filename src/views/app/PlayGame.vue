@@ -8,7 +8,9 @@
         
         <LeaderBoard />
       </v-col>
-      <v-col cols="12" md="9" lg="9" sm="9"><Questions /></v-col>
+      <v-col cols="12" md="10" lg="10" sm="10"><Questions /></v-col>
+
+      
     </v-row>
 
   </v-main>
@@ -20,6 +22,7 @@
 <script>
 import Navbar from "./elements/common/Navbar";
 import Questions from "./elements/game/Questions";
+
 import QuizzInformation from "./elements/game/QuizzInformation";
 import LeaderBoard from "./elements/game/LeaderBoard";
 import Progress from "./elements/common/Progress";
@@ -30,6 +33,7 @@ export default {
     QuizzInformation,
     LeaderBoard,
     Questions,
+
   },
 };
 </script>
