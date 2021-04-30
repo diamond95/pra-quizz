@@ -105,7 +105,7 @@
 
   },
 
-   async validateSelectedAnswers(req, res) {
+   async getAnswersCorrectInfo(req, res) {
  
     try {
       const { gameCode, questionNumber } = req.body

@@ -20,8 +20,8 @@
     isActiveQuizz(gameInformation) {
         return Api().post('isActiveQuizz', gameInformation)
     },
-    validateSelectedAnswers(gameInformation) {
-        return Api().post('validateSelectedAnswers', gameInformation)
+    getAnswersCorrectInfo(gameInformation) {
+        return Api().post('getAnswersCorrectInfo', gameInformation)
     }
  
     

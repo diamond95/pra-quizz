@@ -52,11 +52,12 @@
             >
               <v-divider></v-divider>
               <template v-for="(item, index) in answers">
-                <v-list-item :key="item.IDAnswer">
+                <v-list-item :key="item.IDAnswer" :disabled="questionOver">
                   <template v-slot:default="{ active }">
                     <v-list-item-content>
                       <v-list-item-title
                         v-text="item.description"
+                        :class="correctAnswers.length > 0 && correctAnswers[index].is_correct == 1 ? 'green--text' : ''"
                       ></v-list-item-title>
 
                       <v-list-item-subtitle
@@ -149,9 +150,12 @@
     </v-container>
   </v-container>
 </template>
-<style>
+<style scoped>
 .spacer-100 {
   height: 100px;
+}
+.theme--light.v-list-item--disabled {
+  color: #000000DE !important;
 }
 </style>
 <script>
@@ -192,7 +196,8 @@ export default {
     mdiCheckboxCircle: "mdi-checkbox-blank-circle",
     mdiWrongAnswer: mdiCloseThick  ,
     questionOver: false,
-    correctAnswers: []
+    correctAnswers: [],
+    selectedAnswers: []
   }),
 
   methods: {
@@ -278,25 +283,25 @@ export default {
     questionFinished: function () {
       this.questionOver = true
   
-      var selectedAnswers = []
+
       
       this.questionAnswersIndexes.sort()
       var z = 0
       this.answers.forEach((element, index) => {
 
         if(index == this.questionAnswersIndexes[z]) {
-          selectedAnswers.push(element)
+          this.selectedAnswers.push(element)
           z++
         }
       });
 
-      this.validateSelectedAnswers(selectedAnswers)
+      this.getAnswersCorrectInfo()
     },
 
-    async validateSelectedAnswers(answers) {
-      console.log(answers)
+    async getAnswersCorrectInfo() {
+
       try {
-        this.correctAnswers = (await QuizzService.validateSelectedAnswers({
+        this.correctAnswers = (await QuizzService.getAnswersCorrectInfo({
           gameCode: store.state.gameCode,
           questionNumber: this.$route.params.id
         })).data.res

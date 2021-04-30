@@ -80,7 +80,7 @@ module.exports = (app) => {
     * @description Get correct answers
     * @method POST
     */
-     app.post('/validateSelectedAnswers', isAuthenticated, QuizzController.validateSelectedAnswers)
+     app.post('/getAnswersCorrectInfo', isAuthenticated, QuizzController.getAnswersCorrectInfo)
 
 
 
