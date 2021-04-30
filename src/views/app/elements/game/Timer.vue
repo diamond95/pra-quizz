@@ -42,6 +42,7 @@ export default {
       this.timerVal -= 1;
       this.timerColor()
       if (this.timerVal === 0) {
+        this.$emit("question-finished")
         clearInterval(this.intervalReference); // Stopping the counter when reaching 0.
       }
     },

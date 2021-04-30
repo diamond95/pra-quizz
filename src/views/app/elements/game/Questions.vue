@@ -54,8 +54,7 @@
               <v-divider></v-divider>
               <template v-for="(item, index) in answers">
                 <v-list-item :key="item.IDAnswer">
-                  <template v-slot:default="{}">
-                    <!-- active u slot -->
+                  <template v-slot:default="{ active }">
                     <v-list-item-content>
                       <v-list-item-title
                         v-text="item.description"
@@ -67,13 +66,13 @@
                       ></v-list-item-subtitle>
                     </v-list-item-content>
 
-                    <!-- <v-list-item-action>
-                  <v-icon v-if="!active" color="grey lighten-1">
-                    mdi-check-circle-outline
+                    <v-list-item-action>
+                  <v-icon v-if="!active" color="black lighten-1">
+                    mdi-checkbox-blank-circle-outline
                   </v-icon>
 
-                  <v-icon v-else color="green darken-3"> mdi-check-circle </v-icon>
-                </v-list-item-action> -->
+                  <v-icon v-else color="black darken-3"> mdi-checkbox-blank-circle </v-icon>
+                </v-list-item-action>
                   </template>
                 </v-list-item>
                 <v-divider :key="index + 'DIVIDER'"></v-divider>
@@ -92,7 +91,7 @@
           </v-progress-linear>
         </v-card>
       </v-col>
-      <v-col cols="12" md="1" lg="1" sm="1"><Timer :timeLeft.sync="setTimeLeft" v-if="setTimeLeft != 0" /></v-col>
+      <v-col cols="12" md="1" lg="1" sm="1"><Timer :timeLeft.sync="setTimeLeft" @question-finished="questionFinished" v-if="setTimeLeft != 0" /></v-col>
     </v-row>
 
     <v-container v-else-if="showNotActive">
@@ -243,6 +242,9 @@ export default {
       location.href = startQuizURL + "/1";
       
     },
+    questionFinished: function() {
+      console.log("finished...")
+    }
   },
 
   created() {
