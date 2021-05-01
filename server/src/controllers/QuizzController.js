@@ -41,11 +41,12 @@
     try {
       const { gameCode, questionNumber } = req.body
 
-      var [[q]] = await db.query('SELECT q.description, q.difficulty, q.time, q.answered FROM question as q INNER JOIN quiz as qu on qu.IDQuiz = q.quizID where qu.pin = ? AND q.answered != 1 AND q.question_order = ? AND q.started = 1', [gameCode, questionNumber])
+      var [[q]] = await db.query('SELECT q.IDQuestion, q.description, q.difficulty, q.time, q.answered FROM question as q INNER JOIN quiz as qu on qu.IDQuiz = q.quizID where qu.pin = ? AND q.answered != 1 AND q.question_order = ? AND q.started = 1', [gameCode, questionNumber])
 
       if(!q) {
         return res.status(403).send({
-          error: 'Looks like question is not started yet!'
+          error: 'Looks like question is not started yet!',
+          errorCode: 379
         })
       }
 
@@ -120,6 +121,30 @@
 
       res.send({
         res: ac
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
+
+   async markQuestionAnswered(req, res) {
+ 
+    try {
+      const { questionID } = req.body
+
+      var [sn] = await db.query('update question SET answered = 1 WHERE IDQuestion = ?', [questionID])
+      
+      if(!sn) {
+        return res.status(403).send({
+          error: 'Oops, something went wrong.'
+        })
+      }
+
+      res.send({
+        res: sn.affectedRows == 1 ? true : false
       })
 
     } catch (error) {

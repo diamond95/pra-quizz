@@ -5,14 +5,11 @@
     <v-row>
       <v-col cols="12" md="2" lg="2" sm="2">
         <QuizzInformation />
-        
+
         <LeaderBoard />
       </v-col>
       <v-col cols="12" md="10" lg="10" sm="10"><Questions /></v-col>
-
-      
     </v-row>
-
   </v-main>
 </template>
 
@@ -33,7 +30,6 @@ export default {
     QuizzInformation,
     LeaderBoard,
     Questions,
-
   },
 };
 </script>

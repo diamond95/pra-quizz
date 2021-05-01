@@ -82,6 +82,12 @@ module.exports = (app) => {
     */
      app.post('/getAnswersCorrectInfo', isAuthenticated, QuizzController.getAnswersCorrectInfo)
 
+    /**
+    * @description Set question is finished
+    * @method POST
+    */
+     app.post('/markQuestionAnswered', isAuthenticated, QuizzController.markQuestionAnswered)
+
 
 
   

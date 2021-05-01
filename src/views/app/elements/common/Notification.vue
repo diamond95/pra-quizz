@@ -19,8 +19,8 @@ export default {
   created() {
     this.openNotification(
       null,
-      "#bf5858",
-      "#964545",
+      "#323657",
+      "#23db88",
       `<i class='bx bxs-error'></i>`
     );
   },

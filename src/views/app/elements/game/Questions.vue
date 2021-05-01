@@ -3,7 +3,7 @@
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
-    <v-row v-if="quizStarted">
+    <v-row v-if="quizStarted && questionNotStarted">
       <v-col cols="12" md="11" lg="11" sm="11">
         <v-card outlined class="mt-5" elevation="4">
           <v-alert color="secondary" dark border="bottom">
@@ -57,7 +57,12 @@
                     <v-list-item-content>
                       <v-list-item-title
                         v-text="item.description"
-                        :class="correctAnswers.length > 0 && correctAnswers[index].is_correct == 1 ? 'green--text' : ''"
+                        :class="
+                          correctAnswers.length > 0 &&
+                          correctAnswers[index].is_correct == 1
+                            ? 'green--text'
+                            : ''
+                        "
                       ></v-list-item-title>
 
                       <v-list-item-subtitle
@@ -75,19 +80,23 @@
                         {{ mdiCheckboxCircle }}
                       </v-icon>
                     </v-list-item-action>
-                    
-                    <v-list-item-action v-else-if="questionOver && correctAnswers.length > 0 && correctAnswers[index].is_correct == 1">
+
+                    <v-list-item-action
+                      v-else-if="
+                        questionOver &&
+                        correctAnswers.length > 0 &&
+                        correctAnswers[index].is_correct == 1
+                      "
+                    >
                       <v-icon color="green lighten-1">
                         {{ mdiCheckboxCircleOutlineCorrect }}
                       </v-icon>
-                      
                     </v-list-item-action>
 
                     <v-list-item-action v-else>
                       <v-icon color="red lighten-1">
                         {{ mdiWrongAnswer }}
                       </v-icon>
-
                     </v-list-item-action>
                   </template>
                 </v-list-item>
@@ -148,6 +157,13 @@
         ></v-progress-circular>
       </v-row>
     </v-container>
+    <Notification
+      v-if="notificationStatus != null"
+      :titleProp="notificationTitle"
+      :textProp="notificationStatus"
+      :dialog.sync="dialog"
+      @event-update-dialog="updateNotification"
+    ></Notification>
   </v-container>
 </template>
 <style scoped>
@@ -155,26 +171,33 @@
   height: 100px;
 }
 .theme--light.v-list-item--disabled {
-  color: #000000DE !important;
+  color: #000000de !important;
 }
 </style>
 <script>
 import store from "@/store/store";
 import QuizzService from "@/services/QuizzService";
 import Timer from "./Timer";
+import notificationMixins from "@/mixins/notifications";
+import Notification from "../common/Notification";
 import {
   mdiSpeedometerSlow,
   mdiSpeedometerMedium,
   mdiSpeedometer,
   mdiCloseThick,
-  mdiCheckBold  
+  mdiCheckBold,
 } from "@mdi/js";
 export default {
   name: "Questions",
+  mixins: [notificationMixins],
   components: {
     Timer,
+    Notification,
   },
   data: () => ({
+    notificationStatus: null,
+    notificationTitle: "Greška!",
+    dialog: false,
     overlay: false,
     question: {},
     answers: {},
@@ -182,8 +205,6 @@ export default {
     mdiSpeedometerSlow,
     mdiSpeedometerMedium,
     mdiSpeedometer,
-    questionError: null,
-    answersError: null,
     questionAnswersIndexes: [],
     completedPercentage: 0,
     quizStarted: false,
@@ -192,12 +213,13 @@ export default {
     showNotActive: false,
     setTimeLeft: 0,
     mdiCheckboxCircleOutline: "mdi-checkbox-blank-circle-outline",
-    mdiCheckboxCircleOutlineCorrect: mdiCheckBold ,
+    mdiCheckboxCircleOutlineCorrect: mdiCheckBold,
     mdiCheckboxCircle: "mdi-checkbox-blank-circle",
-    mdiWrongAnswer: mdiCloseThick  ,
+    mdiWrongAnswer: mdiCloseThick,
     questionOver: false,
     correctAnswers: [],
-    selectedAnswers: []
+    selectedAnswers: [],
+    questionNotStarted: true,
   }),
 
   methods: {
@@ -230,10 +252,17 @@ export default {
           this.routeChanged.id,
           store.state.questionSum
         );
-        
+
         this.setTimeLeft = this.question.time;
       } catch (error) {
-        this.questionError = error.response.data.error;
+        this.notificationStatus = error.response.data.error;
+        if (error.response.data.errorCode === 379) {
+          setTimeout(() => {
+            this.questionNotStarted = false;
+            location.href = "#/app/play";
+            location.reload();
+          }, 1000);
+        }
       }
     },
     getAnswers: async function () {
@@ -245,7 +274,7 @@ export default {
           })
         ).data.res;
       } catch (error) {
-        this.answersError = error.response.data.error;
+        this.notificationStatus = error.response.data.error;
       }
     },
     calculatePercentage(partialValue, totalValue) {
@@ -274,43 +303,55 @@ export default {
       this.quizStarted = true;
       var startQuizURL = window.location.href;
 
-      if (!/play/.test(window.location.href)) {
+      if (!window.location.toString().includes("/play/")) {
+        // regex stopped working: !/play/.test(window.location.href)
         /* regex for play/$num hash */
         location.href = startQuizURL + "/1";
       }
-      
     },
     questionFinished: function () {
-      this.questionOver = true
-  
+      this.questionOver = true;
 
-      
-      this.questionAnswersIndexes.sort()
-      var z = 0
+      this.questionAnswersIndexes.sort();
+      var z = 0;
       this.answers.forEach((element, index) => {
-
-        if(index == this.questionAnswersIndexes[z]) {
-          this.selectedAnswers.push(element)
-          z++
+        if (index == this.questionAnswersIndexes[z]) {
+          this.selectedAnswers.push(element);
+          z++;
         }
       });
 
-      this.getAnswersCorrectInfo()
+      this.getAnswersCorrectInfo();
+      this.markQuestionAnswered();
     },
 
     async getAnswersCorrectInfo() {
-
       try {
-        this.correctAnswers = (await QuizzService.getAnswersCorrectInfo({
-          gameCode: store.state.gameCode,
-          questionNumber: this.$route.params.id
-        })).data.res
-
+        this.correctAnswers = (
+          await QuizzService.getAnswersCorrectInfo({
+            gameCode: store.state.gameCode,
+            questionNumber: this.$route.params.id,
+          })
+        ).data.res;
       } catch (error) {
-        this.questionError = error.response.data.error
+        this.notificationStatus = error.response.data.error;
+      }
+    },
+
+    markQuestionAnswered: async function () {
+      var questionID = this.question.IDQuestion
+      
+      try {
+        var t = (await QuizzService.markQuestionAnswered({
+            questionID: questionID
+        })).data.res
+        console.log(t) // uspjesno je zavrseno pitanje... 
+        // todo set timer na 5 sec, load sljedece pitanje 
+        // todo ako je pitanje answered, ide na sljedece - provjeriti 
+      } catch (error) {
+        this.notificationStatus = error.response.data.error;
       }
     }
-    
   },
 
   created() {

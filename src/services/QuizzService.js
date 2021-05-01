@@ -22,6 +22,9 @@
     },
     getAnswersCorrectInfo(gameInformation) {
         return Api().post('getAnswersCorrectInfo', gameInformation)
+    },
+    markQuestionAnswered(gameInformation) {
+        return Api().post('markQuestionAnswered', gameInformation)
     }
  
     
