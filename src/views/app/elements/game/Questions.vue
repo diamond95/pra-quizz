@@ -120,7 +120,12 @@
         ><Timer
           :timeLeft.sync="setTimeLeft"
           @question-finished="questionFinished"
-          v-if="setTimeLeft != 0"
+          v-if="setTimeLeft != 0" />
+
+        <Timer
+          :timeLeft.sync="prepareTimer"
+          v-if="prepareTimer != null"
+          @question-finished="loadNext"
       /></v-col>
     </v-row>
 
@@ -220,6 +225,8 @@ export default {
     correctAnswers: [],
     selectedAnswers: [],
     questionNotStarted: true,
+    prepareTimer: null,
+    nextQuestionNumber: undefined,
   }),
 
   methods: {
@@ -260,8 +267,8 @@ export default {
           setTimeout(() => {
             this.questionNotStarted = false;
             location.href = "#/app/play";
-            location.reload();
-          }, 1000);
+            location.reload(); // todo - sto napraviti ako su neka pitanja vec zavrsila, potreban je redirect na late join
+          }, 3000);
         }
       }
     },
@@ -324,6 +331,32 @@ export default {
       this.getAnswersCorrectInfo();
       this.markQuestionAnswered();
     },
+    loadNext: async function () {
+      this.prepareTimer = null;
+      var totalQuestions = store.state.questionSum;
+      if (this.$route.params.id <= totalQuestions) {
+        var currentQuestion = parseInt(this.$route.params.id);
+        this.nextQuestionNumber = currentQuestion + 1;
+        /* reset questions, answers, correct answ */
+        this.resetLastState();
+
+        this.$router.push({
+          name: "LiveQuizz",
+          params: {
+            id: this.nextQuestionNumber,
+          },
+        });
+      }
+    },
+
+    resetLastState() {
+      this.question = {};
+      this.answers = {};
+      this.correctAnswers = [];
+      this.selectedAnswers = [];
+      this.questionOver = false;
+      this.questionAnswersIndexes = []
+    },
 
     async getAnswersCorrectInfo() {
       try {
@@ -339,19 +372,29 @@ export default {
     },
 
     markQuestionAnswered: async function () {
-      var questionID = this.question.IDQuestion
-      
+      var questionID = this.question.IDQuestion;
+
       try {
-        var t = (await QuizzService.markQuestionAnswered({
-            questionID: questionID
-        })).data.res
-        console.log(t) // uspjesno je zavrseno pitanje... 
-        // todo set timer na 5 sec, load sljedece pitanje 
-        // todo ako je pitanje answered, ide na sljedece - provjeriti 
+        var marked = (
+          await QuizzService.markQuestionAnswered({
+            questionID: questionID,
+            gameCode: store.state.gameCode,
+          })
+        ).data;
+
+        if (marked.res && marked.next) {
+          this.setTimeLeft = 0;
+          setTimeout(() => {
+            this.prepareTimer = 10;
+          }, 2000);
+        } else {
+          this.notificationStatus = `Error`;
+          console.log("quiz over?");
+        }
       } catch (error) {
         this.notificationStatus = error.response.data.error;
       }
-    }
+    },
   },
 
   created() {
