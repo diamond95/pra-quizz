@@ -122,7 +122,7 @@ module.exports = {
     try {
       const { game_pin } = req.body
 
-      var [[pin]] = await db.query('SELECT title FROM quiz WHERE pin = ?', [game_pin])
+      var [[pin]] = await db.query('SELECT IDQuiz, title FROM quiz WHERE pin = ?', [game_pin])
 
       if(!pin) {
         return res.status(403).send({
@@ -140,6 +140,32 @@ module.exports = {
       res.send({
         res: pin,
         token: jwtSignUser(guestJson)
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
+  async guestJoined(req, res) {
+
+    try {
+      const { nickname, quizID } = req.body
+
+      var [sn] = await db.query('INSERT INTO guests SET nickname = ?', [nickname])
+
+      var [qg] = await db.query('INSERT INTO quiz_guests SET quizID = ?, guestID = ?', [quizID, sn.insertId])
+
+      if(!sn || !qg) {
+        return res.status(403).send({
+          error: 'Error: Cannot set guest nickname'
+        })
+      }
+      
+      res.send({
+        res: sn,
+        resqg: qg
       })
 
     } catch (error) {

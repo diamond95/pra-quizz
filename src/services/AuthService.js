@@ -33,6 +33,10 @@ export default {
 
     joinGame (game_pin) {
         return Api().post('joinGame', game_pin)
+    },
+
+    guestJoined (data) {
+        return Api().post('guestJoined', data)
     }
 
    

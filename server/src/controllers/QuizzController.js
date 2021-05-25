@@ -17,7 +17,7 @@
      try {
        const { game_pin } = req.body
  
-       var [[q]] = await db.query('select q.title, q.active, u.username, COUNT(ques.IDQuestion) as questions_sum, SUM(ques.time) as total_time from quiz as q INNER JOIN users as u on u.IDUser = q.userID INNER JOIN question as ques on ques.quizID = q.IDQuiz where pin = ?', [game_pin])
+       var [[q]] = await db.query('select q.IDQuiz, q.title, q.active, u.username, COUNT(ques.IDQuestion) as questions_sum, SUM(ques.time) as total_time from quiz as q INNER JOIN users as u on u.IDUser = q.userID INNER JOIN question as ques on ques.quizID = q.IDQuiz where pin = ?', [game_pin])
  
        if(!q) {
          return res.status(403).send({
@@ -154,6 +154,32 @@
       res.send({
         res: sn.affectedRows == 1 ? true : false,
         next: ready || false
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
+   async getCurrentGuests(req, res) {
+ 
+    try {
+      
+      const { quizID } = req.body
+  
+      var [guestList] = await db.query('select g.IDGuest, g.nickname from quiz_guests as q INNER JOIN guests as g ON q.guestID = g.IDGuest WHERE q.quizID = ?', [quizID])
+      
+      if(!guestList) {
+        return res.status(403).send({
+          error: 'Oops, cannot get guests'
+        })
+      }
+
+      
+
+      res.send({
+        res: guestList
       })
 
     } catch (error) {

@@ -151,6 +151,25 @@
           indeterminate
         ></v-progress-circular>
       </v-row>
+      <div class="spacer-200"></div>
+      <v-row justify="center">
+        <div v-for="guest in guestList" :key="guest.IDGuest">
+           <v-chip
+        
+      class="ma-2"
+      color="secondary"
+      outlined
+  
+    >
+    <v-icon left>
+        mdi-account-outline
+      </v-icon>
+      {{ guest.nickname }}
+      
+    </v-chip>
+        </div>
+       
+      </v-row>
     </v-container>
     <v-container v-else>
       <v-row class="mt-16" justify="center">
@@ -174,6 +193,9 @@
 <style scoped>
 .spacer-100 {
   height: 100px;
+}
+.spacer-200 {
+  height: 200px;
 }
 .theme--light.v-list-item--disabled {
   color: #000000de !important;
@@ -227,6 +249,7 @@ export default {
     questionNotStarted: true,
     prepareTimer: null,
     nextQuestionNumber: undefined,
+    guestList: []
   }),
 
   methods: {
@@ -287,6 +310,13 @@ export default {
     calculatePercentage(partialValue, totalValue) {
       return (100 * partialValue) / totalValue;
     },
+    getCurrentGuests: async function() {
+      try {
+        this.guestList = (await QuizzService.getCurrentGuests({ quizID: store.state.quizInfo.IDQuiz })).data.res;
+      } catch (error) {
+        this.notificationStatus = error.response.data.error;
+      }
+    },
     DOMUpdateActiveQuiz: function () {
       //const self = this;
       this.intervalid7 = setInterval(this.timer, 3000);
@@ -297,6 +327,8 @@ export default {
           gameCode: store.state.gameCode,
         })
       ).data.res;
+
+      this.getCurrentGuests()
 
       if (quiz.active == 1) {
         this.stopTimer();

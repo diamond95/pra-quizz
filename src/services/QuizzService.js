@@ -25,6 +25,9 @@
     },
     markQuestionAnswered(gameInformation) {
         return Api().post('markQuestionAnswered', gameInformation)
+    },
+    getCurrentGuests(quizID) {
+        return Api().post('getCurrentGuests', quizID)
     }
  
     

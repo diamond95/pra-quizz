@@ -46,6 +46,12 @@ module.exports = (app) => {
      */
     app.post('/joinGame', AuthController.joinGame)
 
+    /**
+     * @description Save guest nickname
+     * @method POST
+     */
+    app.post('/guestJoined', AuthController.guestJoined)
+
     /////////////////////////////////////////////////////////////////////
     ///                                                                //
     ///                          Quizz                                 //
@@ -87,6 +93,12 @@ module.exports = (app) => {
     * @method POST
     */
      app.post('/markQuestionAnswered', isAuthenticated, QuizzController.markQuestionAnswered)
+
+    /**
+    * @description Get current joined guest list
+    * @method POST
+    */
+     app.post('/getCurrentGuests', isAuthenticated, QuizzController.getCurrentGuests)
 
 
 

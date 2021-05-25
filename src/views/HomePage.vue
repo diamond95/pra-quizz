@@ -400,6 +400,7 @@ export default {
       showPinBox: true,
       showNicknameBox: false,
       gameNickname: "",
+      quizID: null,
       newGame: null,
       guestToken: null
     };
@@ -469,6 +470,7 @@ export default {
             game_pin: this.gamePin,
           })
         ).data;
+        this.quizID = this.newGame.res.IDQuiz
         this.guestToken = this.newGame.token
         this.gameFoundTitle = this.newGame.res.title;
         this.showPinBox = false;
@@ -485,10 +487,20 @@ export default {
       this.error = null;
     },
 
-    playGame() {
+    async playGame() {
       if(!this.gameNickname.length > 0 || this.newGame == null) {
         this.joinGameError = `Unesite nadimak.`
         return;
+      }
+
+      try {
+        await AuthService.guestJoined({
+          nickname: this.gameNickname,
+          quizID: this.quizID
+        });
+        
+      } catch (error) {
+        this.error = error.response.data.error;
       }
       
       this.$store.dispatch("setToken", this.guestToken);
