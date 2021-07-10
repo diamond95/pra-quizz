@@ -154,21 +154,11 @@
       <div class="spacer-200"></div>
       <v-row justify="center">
         <div v-for="guest in guestList" :key="guest.IDGuest">
-           <v-chip
-        
-      class="ma-2"
-      color="secondary"
-      outlined
-  
-    >
-    <v-icon left>
-        mdi-account-outline
-      </v-icon>
-      {{ guest.nickname }}
-      
-    </v-chip>
+          <v-chip class="ma-2" color="secondary" outlined>
+            <v-icon left> mdi-account-outline </v-icon>
+            {{ guest.nickname }}
+          </v-chip>
         </div>
-       
       </v-row>
     </v-container>
     <v-container v-else>
@@ -249,7 +239,7 @@ export default {
     questionNotStarted: true,
     prepareTimer: null,
     nextQuestionNumber: undefined,
-    guestList: []
+    guestList: [],
   }),
 
   methods: {
@@ -310,9 +300,13 @@ export default {
     calculatePercentage(partialValue, totalValue) {
       return (100 * partialValue) / totalValue;
     },
-    getCurrentGuests: async function() {
+    getCurrentGuests: async function () {
       try {
-        this.guestList = (await QuizzService.getCurrentGuests({ quizID: store.state.quizInfo.IDQuiz })).data.res;
+        this.guestList = (
+          await QuizzService.getCurrentGuests({
+            quizID: store.state.quizInfo.IDQuiz,
+          })
+        ).data.res;
       } catch (error) {
         this.notificationStatus = error.response.data.error;
       }
@@ -328,7 +322,7 @@ export default {
         })
       ).data.res;
 
-      this.getCurrentGuests()
+      this.getCurrentGuests();
 
       if (quiz.active == 1) {
         this.stopTimer();
@@ -387,7 +381,7 @@ export default {
       this.correctAnswers = [];
       this.selectedAnswers = [];
       this.questionOver = false;
-      this.questionAnswersIndexes = []
+      this.questionAnswersIndexes = [];
     },
 
     async getAnswersCorrectInfo() {
