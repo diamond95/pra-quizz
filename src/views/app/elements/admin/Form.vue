@@ -30,11 +30,22 @@
             <v-col cols="12" md="1" lg="1" sm="1">
               <h3 class="pa-5">{{ i + 1}}.</h3>
             </v-col>
-            <v-col cols="12" md="10" lg="10" sm="10">
+            <v-col cols="12" md="9" lg="9" sm="9">
               <v-text-field
                 v-model="item.question.description"
                 label="Unesi pitanje"
                 required
+                outlined
+                autocomplete="false"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="1" lg="1" sm="1">
+              <v-text-field
+                v-model="item.question.time"
+                label="Vrijeme"
+                required
+                width="20px"
+                type="number"
                 autocomplete="false"
               ></v-text-field>
             </v-col>
@@ -44,7 +55,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          <p>{{item.question.description}}</p>
+          
           <v-row>
             <v-col cols="12" md="1" lg="1" sm="1">
               <v-btn color="primary" fab small dark class="ml-3" @click="addAnswer(i)">
@@ -112,7 +123,7 @@ export default {
       {
         question: {
           description: "",
-          time: "",
+          time: 20,
           answers: [
             {
               description: "",
@@ -128,7 +139,7 @@ export default {
       {
         question: {
           description: "",
-          time: "",
+          time: 20,
           answers: [
             {
               description: "",
@@ -152,7 +163,7 @@ export default {
       this.questionList.push({
         question: {
           description: "",
-          time: "",
+          time: 20,
           answers: [
             {
               description: "",
