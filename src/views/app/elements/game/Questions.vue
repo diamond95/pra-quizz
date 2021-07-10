@@ -8,7 +8,7 @@
         <v-card outlined class="mt-5" elevation="4">
           <v-alert color="secondary" dark border="bottom">
             <h3 color="secondary" class="mt-2">
-              {{ routeChanged.id }}. {{ question.description }}
+              {{ routeChanged.id }}.
             </h3>
             <v-spacer></v-spacer>
             <v-badge
@@ -277,11 +277,12 @@ export default {
       } catch (error) {
         this.notificationStatus = error.response.data.error;
         if (error.response.data.errorCode === 379) {
+          this.questionNotStarted = false;
           setTimeout(() => {
-            this.questionNotStarted = false;
+            
             location.href = "#/app/play";
             location.reload(); // todo - sto napraviti ako su neka pitanja vec zavrsila, potreban je redirect na late join
-          }, 3000);
+          }, 300);
         }
       }
     },

@@ -141,7 +141,7 @@
       var [[tp]] = await db.query('SELECT q.IDQuestion, q.question_order, q.started FROM question as q INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE q.question_order > ? AND qu.pin = ? ORDER BY IDQuestion LIMIT 1', [questionID, gameCode])
       
       if(tp) {
-        var [kp] = await db.query('UPDATE question AS q INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID SET q.started = 1 WHERE q.IDQuestion = ?', [tp.IDQuestion])
+        //var [kp] = await db.query('UPDATE question AS q INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID SET q.started = 1 WHERE q.IDQuestion = ?', [tp.IDQuestion])
         var ready = true
       }
       

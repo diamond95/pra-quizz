@@ -439,7 +439,7 @@ export default {
         const login = await AuthService.login(this.login);
         if (login.status == 200) {
           this.errorLogin = ``;
-
+          console.log(login)
           await this.setAuthStore(login);
 
           this.$router.push({

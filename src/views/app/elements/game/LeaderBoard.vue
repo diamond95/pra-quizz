@@ -15,43 +15,10 @@
           <v-list-item-action>
             <v-icon color="primary">mdi-account</v-icon>
           </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title
-              >Izradio:
-              <span class="font-weight-black ml-5 float-right">{{
-                quizzInformation.username
-              }}</span></v-list-item-title
-            >
-          </v-list-item-content>
+          
         </v-list-item>
 
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon color="primary">mdi-help</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title
-              >Ukupno pitanja:
-              <span class="font-weight-black ml-5 float-right">{{
-                quizzInformation.questions_sum
-              }}</span></v-list-item-title
-            >
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon color="primary">mdi-clock</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title
-              >Ukupno trajanje:
-              <span class="font-weight-black ml-5 float-right">{{
-                quizzInformation.total_time
-              }}</span></v-list-item-title
-            >
-          </v-list-item-content>
-        </v-list-item>
+      
       </v-list>
     </v-card>
 </template>

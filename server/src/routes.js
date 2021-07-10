@@ -4,9 +4,11 @@
  * @category server/src
  */
 const AuthController = require('./controllers/AuthController')
+// eslint-disable-next-line no-unused-vars
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const isAuthenticated = require('./policies/isAuthenticated')
 const QuizzController = require('./controllers/QuizzController')
+const AdminController = require('./controllers/AdminController')
 
 module.exports = (app) => {
 
@@ -101,7 +103,15 @@ module.exports = (app) => {
      app.post('/getCurrentGuests', isAuthenticated, QuizzController.getCurrentGuests)
 
 
-
+    /////////////////////////////////////////////////////////////////////
+    ///                                                                //
+    ///                          Admin                                 //
+    ///                                                                //
+    /////////////////////////////////////////////////////////////////////
   
-
+    /**
+    * @description Get list of all quizz by logged user
+    * @method POST
+    */
+     app.post('/getQuizzList', isAuthenticated, AdminController.getQuizzList)
 }

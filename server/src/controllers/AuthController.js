@@ -55,6 +55,7 @@ module.exports = {
 
       var hashedPassword = await generateHash(password);      
       
+      // eslint-disable-next-line no-unused-vars
       var [user] = await db.query('INSERT INTO users SET email = ?, username = ?, password = ?', [email, username, hashedPassword]);
       
       const userJson = { email, username }

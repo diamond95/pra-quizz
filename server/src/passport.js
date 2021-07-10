@@ -13,10 +13,10 @@ passport.use(
   }, async function (jwtPayload, done) {
     try {
    
-      const user = await db.query('SELECT * FROM Users WHERE IDUser = ?', [jwtPayload.IDUser])
-  
+      const user = await db.query('SELECT * FROM users WHERE IDUser = ?', [jwtPayload.IDUser])
+
       if (!user) {
-       // console.error("tu je puko!!")
+       console.error("tu je puko!!")
         return done(new Error(), false)
       }
       return done(null, user[0][0])

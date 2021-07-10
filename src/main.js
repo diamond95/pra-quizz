@@ -22,6 +22,17 @@ import 'vuesax/dist/vuesax.css'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 
+/* vxe table  */
+import 'xe-utils'
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/style.css'
+VXETable.setup({
+  delayHover: 250,
+})
+
+Vue.use(VXETable)
+/* vxe table  */
+
 sync(store, router)
 
 const i18n = new VueI18n({
