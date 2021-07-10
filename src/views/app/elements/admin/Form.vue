@@ -96,9 +96,7 @@
 .white-space {
   height: 80px;
 }
-body {
-  overflow: auto !important;
-}
+
 </style>
 
 <script>
