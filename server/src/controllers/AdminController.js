@@ -36,6 +36,29 @@ module.exports = {
 
   },
 
+  async deleteQuizz(req, res) {
+
+    try {
+      const { id } = req.body
+
+      var [q] = await db.query('TODO', [id])
+
+      if (!q) {
+        return res.status(403).send({
+          error: 'err!'
+        })
+      }
+
+      res.send({
+        res: q
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
   async createQuizz(req, res) {
     try {
       const { quizz, questions, userID } = req.body

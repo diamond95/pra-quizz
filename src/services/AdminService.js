@@ -11,6 +11,9 @@
     getQuizzList (id) {
          return Api().post('getQuizzList', id)
     },
+    deleteQuizz (id) {
+         return Api().post('deleteQuizz', id)
+    },
  
     
  }

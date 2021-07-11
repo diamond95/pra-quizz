@@ -68,7 +68,7 @@
                 <v-btn
                   width="100"
                   elevation="4"
-                  @click="showDialogPivot(item.task_name)"
+                  @click="deleteQuizz(item.IDQuiz)"
                   color="red"
                   small
                   class="white--text"
@@ -138,6 +138,16 @@ export default {
           question: 1
         }
       })
+    },
+    deleteQuizz: async function(IDQuiz) {
+      try {
+        await AdminService.deleteQuizz({
+          id: IDQuiz
+        })
+        this.getQuizzList()
+      } catch (error) {
+        this.error = error;
+      }
     },
     getQuizzList: async function() {
       try {
