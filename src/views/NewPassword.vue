@@ -18,12 +18,21 @@
                 </v-row>
                 <v-row justify="center">
                   <v-col cols="12" lg="10" sm="10" md="10">
-                    <v-text-field label="Nova lozinka" outlined></v-text-field>
+                    <v-text-field label="Nova lozinka" v-model="newpw" outlined></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row justify="center">
                   <v-btn color="secondary" @click="saveNewPassword">Spremi</v-btn>
                 </v-row>
+                <br />
+                <v-row justify="center">
+                  <p> {{ status }}</p>
+                </v-row>
+                <br /><br />
+                <v-row justify="center" >
+                    <v-btn color="primary" v-if="showLoginButton" @click="loginPage">Prijava</v-btn>
+                </v-row>
+                <br />
                 <br />
               </v-card>
             </v-row>
@@ -108,28 +117,27 @@ export default {
      * @description Function for set new password after clicking on email verification link
      * @method POST
      */
-    async setNewPassword() {
-      this.error = null;
-      this.success = null;
-
-      try {
-        const response = await AuthService.setNewPassword({
-          password: this.password,
-          confirm_password: this.confirm_password
-        });
-        let success = response.data.uspjesno;
-
-        if (success == 1) {
-          this.success = `Uspješno ste promjenili lozinku. Sada se možete prijaviti.`;
-          this.loginButton = true;
-        }
-      } catch (error) {
-        this.error = error.response.data.error;
-      }
-    },
-
     saveNewPassword: async function() {
-        
+        if(!this.$route.params.email) return;
+
+        var emailDecoded = Buffer.from(this.$route.params.email, 'base64').toString()
+
+        try {
+            var change = (await AuthService.changePassword({
+                email: emailDecoded,
+                password: this.newpw
+            })).data.res
+            change ? this.status = `Uspješno promjenjena lozinka!` : this.status = `Dogodila se greška prilikom izmjene lozinke!`
+            change ? this.showLoginButton = true : ''
+        } catch (error) {
+            this.error = error
+        }
+
+    },
+    loginPage: function() {
+        this.$router.push({
+            name: 'HomePage'
+        })
     }
   },
   data() {
@@ -138,7 +146,10 @@ export default {
       confirm_password: "",
       error: null,
       success: null,
-      loginButton: false
+      loginButton: false,
+      newpw: '',
+      status: '',
+      showLoginButton: false,
     };
   }
 };

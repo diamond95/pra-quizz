@@ -625,7 +625,7 @@ export default {
             }
     
         } catch (error) {
-            this.error = error.response.data.error
+            this.errorResetAccount = error.response.data.error
         }
     }
   },

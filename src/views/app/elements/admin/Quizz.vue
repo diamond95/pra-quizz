@@ -75,7 +75,7 @@
                 >OBRIŠI</v-btn>
               </v-row>
               <v-row no-gutters class="pa-2">
-                <v-btn width="100" elevation="4" color="secondary" small>POKRENI</v-btn>
+                <v-btn width="100" elevation="4" color="secondary" @click="runQuizz()" small>POKRENI</v-btn>
               </v-row>
             </v-col>
           </v-row>
@@ -130,6 +130,9 @@ export default {
   },
 
   methods: {
+    runQuizz() {
+      
+    },
     getQuizzList: async function() {
       try {
         this.quizzList = (await AdminService.getQuizzList({

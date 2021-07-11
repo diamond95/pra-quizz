@@ -41,6 +41,10 @@ export default {
 
     passwordReset (email) {
         return Api().post('passwordReset', email)
+    },
+
+    changePassword (email) {
+        return Api().post('changePassword', email)
     }
 
    

@@ -42,7 +42,7 @@ const routes = [
   },
 
   {
-    path: '/new-password',
+    path: '/new-password/:email',
     name: 'NewPassword',
     component: () => import('../views/NewPassword.vue')
   },

@@ -60,6 +60,12 @@ module.exports = (app) => {
      */
     app.post('/passwordReset', AuthController.passwordReset)
 
+    /**
+     * @description Save new password
+     * @method POST
+     */
+    app.post('/changePassword', AuthController.changePassword)
+
     /////////////////////////////////////////////////////////////////////
     ///                                                                //
     ///                          Quizz                                 //

@@ -68,7 +68,8 @@ module.exports = {
         pass: 'Z60w9Q18mPQyK'
       }
     });
-    let URL = "http://localhost:8081/#/new-password"
+    var crypt = Buffer.from(req.email).toString('base64')
+    let URL = "http://localhost:8081/#/new-password/" + crypt
 
     let ButtonStyle = "background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
 

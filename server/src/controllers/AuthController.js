@@ -22,7 +22,7 @@ function jwtSignUser(user) {
   const ONE_DAY = 60 * 60 * 24
 
   return jwt.sign(user, config.authentication.jwtSecret, {
-   expiresIn: ONE_DAY
+    expiresIn: ONE_DAY
   })
 }
 
@@ -51,14 +51,14 @@ module.exports = {
    */
   async register(req, res) {
     try {
-      
+
       const { email, username, password } = req.body;
 
-      var hashedPassword = await generateHash(password);      
-      
+      var hashedPassword = await generateHash(password);
+
       // eslint-disable-next-line no-unused-vars
       var [user] = await db.query('INSERT INTO users SET email = ?, username = ?, password = ?', [email, username, hashedPassword]);
-      
+
       const userJson = { email, username }
       res.send({
         user: userJson,
@@ -92,15 +92,15 @@ module.exports = {
 
       var [[x8]] = await db.query('SELECT * FROM users WHERE username = ?', [username])
 
-      
+
       if (!x8) {
         return res.status(403).send({
           error: 'Ovaj račun ne postoji.'
         })
       }
-     
+
       const isPasswordValid = await bcrypt.compare(password, x8.password)
-      
+
       if (!isPasswordValid) {
         return res.status(403).send({
           error: 'Uneseni podaci su neispravni!'
@@ -126,7 +126,7 @@ module.exports = {
 
       var [[pin]] = await db.query('SELECT IDQuiz, title FROM quiz WHERE pin = ?', [game_pin])
 
-      if(!pin) {
+      if (!pin) {
         return res.status(403).send({
           error: 'Igra ne postoji ili nije aktivna!'
         })
@@ -159,12 +159,12 @@ module.exports = {
 
       var [qg] = await db.query('INSERT INTO quiz_guests SET quizID = ?, guestID = ?', [quizID, sn.insertId])
 
-      if(!sn || !qg) {
+      if (!sn || !qg) {
         return res.status(403).send({
           error: 'Error: Cannot set guest nickname'
         })
       }
-      
+
       res.send({
         res: sn,
         resqg: qg
@@ -177,27 +177,53 @@ module.exports = {
   },
 
   async passwordReset(req, res) {
- 
-    try {
-        
-        const {email} = req.body
-        
-        var [[user]] = await db.query('SELECT * FROM users WHERE email = ?', [email])
-       
-        MailSender.passwordResetEmail(user)
 
-        res.send({
-            user: user.email,
-        })
-      
+    try {
+
+      const { email } = req.body
+
+      var [[user]] = await db.query('SELECT * FROM users WHERE email = ?', [email])
+
+      MailSender.passwordResetEmail(user)
+
+      res.send({
+        user: user.email,
+      })
+
     } catch (err) {
 
-            res.status(500).send({
-                error: `Uneseni email ne postoji!`
-            })
+      res.status(500).send({
+        error: `Uneseni email ne postoji!`
+      })
     }
-},
+  },
 
-  
+  async changePassword(req, res) {
+
+    try {
+
+      const { email, password } = req.body
+
+      var hashedPassword = await generateHash(password);
+      var [user] = await db.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, email])
+
+      var status = false;
+      if(user.affectedRows > 0) {
+        status = true
+      }
+
+      res.send({
+        res: status
+      })
+
+    } catch (err) {
+
+      res.status(500).send({
+        error: `Uneseni email ne postoji!`
+      })
+    }
+  },
+
+
 
 }
