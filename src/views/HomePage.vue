@@ -94,7 +94,7 @@
             </li>
             <br />
             <li>
-              <a href=""
+              <a href="#reset"
                 ><font color="white">{{
                   $t("homePage.fade_screen.reset_password")
                 }}</font></a
@@ -109,6 +109,92 @@
       </div>
     </form>
     <!-- end login -->
+
+    <!--reset pass-->
+    <form action="" method="POST" name="login" @keydown.enter="userLogin">
+      <div class="login-box-area">
+        <div id="reset" class="fade">
+          <a href="#" class="close-btn">
+            <b>X</b>
+          </a>
+          <ul>
+            <li>
+              <input
+                v-bind:placeholder="$t('homePage.fade_screen.email')"
+                class="input-username"
+                spellcheck="false"
+                type="text"
+                v-model="resetAccount.email"
+                autocomplete="off"
+              />
+            </li>
+            <br />
+            
+            <li>
+              <div class="login">
+                <button
+                  type="button"
+                  @click="resetAccountFn"
+                  name="login"
+                  class="loginform-btn"
+                >
+                  <i class="fa fa-user"></i> {{ $t("homePage.password_reset_btn") }}
+                </button>
+              </div>
+            </li>
+            
+            <br />
+            <li>
+              <p class="white--text">{{ errorResetAccount }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+    <!-- end reset passw -->
+
+    <!--create new pass-->
+    <form action="" method="POST" name="login" @keydown.enter="userLogin">
+      <div class="login-box-area">
+        <div id="createPassword" class="fade">
+          <a href="#" class="close-btn">
+            <b>X</b>
+          </a>
+          <ul>
+            <li>
+              <input
+                v-bind:placeholder="$t('homePage.fade_screen.email')"
+                class="input-username"
+                spellcheck="false"
+                type="text"
+                v-model="resetAccount.newPassword"
+                autocomplete="off"
+              />
+            </li>
+            <br />
+          
+            <li>
+              <div class="login">
+                <button
+                  type="button"
+                  @click="resetAccountFn"
+                  name="login"
+                  class="loginform-btn"
+                >
+                  <i class="fa fa-user"></i> {{ $t("homePage.password_reset_btn") }}
+                </button>
+              </div>
+            </li>
+            
+            <br />
+            <li>
+              <p class="white--text">{{ errorResetAccount }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+    <!-- create new passw -->
 
     <!--Register-->
     <form
@@ -394,6 +480,11 @@ export default {
       langs: this.$i18n.messages[this.$i18n.locale].homePage.languages,
       error: null,
       errorLogin: null,
+      resetAccount: {
+        email: '',
+        newPassword: '',
+      },
+      errorResetAccount: null,
       gamePin: "",
       joinGameError: null,
       gameFoundTitle: null,
@@ -522,6 +613,20 @@ export default {
         name: 'PlayGame'
       })
 
+    },
+    resetAccountFn: async function() {
+      try {
+            const response = await AuthService.passwordReset({
+                email: this.resetAccount.email
+            })
+            let email = response.data.user
+            if(email == this.resetAccount.email) {
+                this.errorResetAccount = "Poslali smo vam pozivnicu na email za promjenu lozinke."
+            }
+    
+        } catch (error) {
+            this.error = error.response.data.error
+        }
     }
   },
   

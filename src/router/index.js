@@ -41,6 +41,12 @@ const routes = [
     meta: { auth: true, isAdmin: true }
   },
 
+  {
+    path: '/new-password',
+    name: 'NewPassword',
+    component: () => import('../views/NewPassword.vue')
+  },
+
   
 
   {

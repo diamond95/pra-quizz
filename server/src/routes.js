@@ -54,6 +54,12 @@ module.exports = (app) => {
      */
     app.post('/guestJoined', AuthController.guestJoined)
 
+    /**
+     * @description Reset account password
+     * @method POST
+     */
+    app.post('/passwordReset', AuthController.passwordReset)
+
     /////////////////////////////////////////////////////////////////////
     ///                                                                //
     ///                          Quizz                                 //

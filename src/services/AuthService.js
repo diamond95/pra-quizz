@@ -37,6 +37,10 @@ export default {
 
     guestJoined (data) {
         return Api().post('guestJoined', data)
+    },
+
+    passwordReset (email) {
+        return Api().post('passwordReset', email)
     }
 
    

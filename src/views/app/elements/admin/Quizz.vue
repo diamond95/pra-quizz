@@ -14,7 +14,7 @@
       </v-icon>
     </v-btn>
 
-    <v-expansion-panels popout class="mt-8">
+    <v-expansion-panels popout class="mt-8" v-if="quizzList && quizzList.length != 0">
       <v-expansion-panel v-for="(item,i) in quizzList" :key="i">
         <v-expansion-panel-header>
           <h3 class="title font-weight-bold font">{{ item.title }}</h3>
@@ -69,9 +69,10 @@
                   width="100"
                   elevation="4"
                   @click="showDialogPivot(item.task_name)"
-                  color="blue accent-1"
+                  color="red"
                   small
-                >UREDI</v-btn>
+                  class="white--text"
+                >OBRIŠI</v-btn>
               </v-row>
               <v-row no-gutters class="pa-2">
                 <v-btn width="100" elevation="4" color="secondary" small>POKRENI</v-btn>
@@ -81,6 +82,16 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-alert
+      outlined
+      class="mt-4"
+      type="warning"
+      prominent
+      border="left"
+      v-else
+    >
+    Započni s izradom svojeg prvog kviza!
+    </v-alert>
   </div>
 </template>
 

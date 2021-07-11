@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt')
 const SALT = 10
 var db = require('../models/index')
 const ErrorHandling = require('../helpers/error_handling')
+const MailSender = require('../mailer/send_mail')
 /**
  * 
  * @param {Object} user
@@ -173,7 +174,29 @@ module.exports = {
       ErrorHandling.status500(res, error)
     }
 
-  }
+  },
+
+  async passwordReset(req, res) {
+ 
+    try {
+        
+        const {email} = req.body
+        
+        var [[user]] = await db.query('SELECT * FROM users WHERE email = ?', [email])
+       
+        MailSender.passwordResetEmail(user)
+
+        res.send({
+            user: user.email,
+        })
+      
+    } catch (err) {
+
+            res.status(500).send({
+                error: `Uneseni email ne postoji!`
+            })
+    }
+},
 
   
 

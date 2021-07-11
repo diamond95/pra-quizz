@@ -47,5 +47,42 @@ module.exports = {
         }
       }
     );
+  },
+
+  /**
+     * 
+     * @param {Object} req 
+     * @param {Object} res 
+     * @param {Function} next
+     * @description Function for sending email on forgot-password form
+     */
+  passwordResetEmail(req, res, next) {
+
+
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'helpquizz@gmail.com',
+        pass: 'Z60w9Q18mPQyK'
+      }
+    });
+    let URL = "http://localhost:8081/#/new-password"
+
+    let ButtonStyle = "background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;"
+
+    transporter.sendMail({
+
+      from: '"Super Quizz 👻" <ivan@quizz.hr>',
+      to: req.email,
+      subject: "Resetiranje lozinke",
+
+      html: "<b>Pozdrav ! </b><br /><br /><br />Za resetiranje lozinke računa molimo kliknite tipku u nastavku: <br /><br /><br /><a href='" + URL + "'" + " style='" + ButtonStyle + "'>Resetiranje lozinke</a>"
+
+    }, (error, result) => {
+
+      console.log(result, error)
+    });
   }
 };
