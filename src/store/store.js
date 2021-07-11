@@ -39,7 +39,7 @@ export default new Vuex.Store({
            }
        },
        setUser(state, user) {
-           state.token = user
+           state.user = user
        },
        setUserInformation(state, userInformation) {
            state.userInformation = userInformation
