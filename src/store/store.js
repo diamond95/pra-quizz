@@ -22,7 +22,7 @@ export default new Vuex.Store({
         user: null,
         isUserLoggedIn: false,
         isAdmin: false,
-        userInformation: null,
+        userInformation:null,
         gameTitle: null,
         gameCode: null,
         questionSum: null,

@@ -450,7 +450,6 @@ export default {
         const login = await AuthService.login(this.login);
         if (login.status == 200) {
           this.errorLogin = ``;
-          console.log(login)
           await this.setAuthStore(login);
 
           this.$router.push({
@@ -487,7 +486,7 @@ export default {
         this.showPinBox = false;
         this.showNicknameBox = true;
       } catch (error) {
-        this.joinGameError = error.response.data.error;
+        this.joinGameError = error
       }
     },
 

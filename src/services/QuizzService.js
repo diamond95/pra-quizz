@@ -3,7 +3,7 @@
  * @module QuizzService
  * @category src/services/
  */
- import Api from '@/services/api/ApiGuest'
+ import Api from '@/services/api/Api'
 
  export default {
  
