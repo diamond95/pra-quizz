@@ -1,16 +1,29 @@
 <template>
   <v-container class="mt-5" fluid>
+    <v-form ref="form" v-model="valid">
     <v-row justify="center">
       <v-card width="60%">
-        <v-form ref="form" v-model="valid">
+        
           <v-row justify="center">
             <v-col cols="12" md="6" lg="6">
-              <v-text-field v-model="quizz.title" label="Naziv" required autocomplete="false"></v-text-field>
+              <v-text-field
+                v-model="quizz.title"
+                :rules="nameRules"
+                label="Naziv"
+                required
+                autocomplete="false"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row justify="center">
             <v-col cols="12" md="6" lg="6">
-              <v-text-field v-model="quizz.pin" label="PIN" required autocomplete="false"></v-text-field>
+              <v-text-field
+                v-model="quizz.pin"
+                label="PIN"
+                :rules="pinRules"
+                required
+                autocomplete="false"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row justify="center" class="mb-10">
@@ -18,14 +31,12 @@
               <v-icon>mdi-plus</v-icon>Dodaj pitanje
             </v-btn>
           </v-row>
-        </v-form>
       </v-card>
     </v-row>
     <div class="white-space"></div>
 
     <v-row v-for="(item,i) in questionList" :key="i">
       <v-card class="mb-10" width="100%">
-        <v-form ref="form" v-model="valid">
           <v-row class="pa-3">
             <v-col cols="12" md="1" lg="1" sm="1">
               <h3 class="pa-5">{{ i + 1}}.</h3>
@@ -34,6 +45,7 @@
               <v-text-field
                 v-model="item.question.description"
                 label="Unesi pitanje"
+                :rules="[v => !!v || 'Unesi pitanje']"
                 required
                 outlined
                 autocomplete="false"
@@ -44,6 +56,7 @@
                 v-model="item.question.time"
                 label="Vrijeme"
                 required
+                :rules="[v => !!v || 'Unesi vrijeme']"
                 width="20px"
                 type="number"
                 autocomplete="false"
@@ -55,7 +68,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          
+
           <v-row>
             <v-col cols="12" md="1" lg="1" sm="1">
               <v-btn color="primary" fab small dark class="ml-3" @click="addAnswer(i)">
@@ -72,6 +85,7 @@
                     v-model="answer.description"
                     :label="`Odgovor ` + (index + 1) + `:`"
                     required
+                    :rules="[v => !!v || 'Unesi odgovor']"
                     autocomplete="false"
                   ></v-text-field>
                   <v-switch
@@ -85,9 +99,18 @@
               </v-col>
             </v-row>
           </v-row>
-        </v-form>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn fab dark large v-bind="attrs" v-on="on" @click="validate" color="primary" fixed right bottom>
+                <v-icon dark>mdi-download</v-icon>
+              </v-btn>
+            </template>
+            <span>Kreiraj kviz</span>
+          </v-tooltip>
+        
       </v-card>
     </v-row>
+    </v-form>
   </v-container>
 </template>
 
@@ -96,7 +119,6 @@
 .white-space {
   height: 80px;
 }
-
 </style>
 
 <script>
@@ -175,6 +197,16 @@ export default {
         }
       });
     },
+    validate() {
+      var validation = this.$refs.form.validate();
+      if(validation) this.createQuizz();
+    },
+    reset() {
+      this.$refs.form.reset();
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
     deleteQuestion: function(i) {
       this.questionList.splice(i, 1);
     },
@@ -186,7 +218,10 @@ export default {
       });
     },
     removeAnswer: function(itemIndex, answerIndex) {
-        this.questionList[itemIndex].question.answers.splice(answerIndex, 1)
+      this.questionList[itemIndex].question.answers.splice(answerIndex, 1);
+    },
+    createQuizz: function() {
+      
     }
   }
 };
