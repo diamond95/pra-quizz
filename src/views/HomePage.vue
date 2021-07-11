@@ -406,8 +406,19 @@ export default {
     };
   },
 
+  mounted() {
+    localStorage.setItem('language', 'en')
+  },
+  created() {
+    
+    setTimeout(() => (this.elementVisible = false), 1000);
+    
+  },
+
   methods: {
+    
     toggleLanguage: function () {
+      localStorage.setItem('language', this.$i18n.locale)
       this.langs = this.$i18n.messages[this.$i18n.locale].homePage.languages;
     },
     userRegistration: async function () {
@@ -514,15 +525,6 @@ export default {
 
     }
   },
-
-  created() {
-    setTimeout(() => (this.elementVisible = false), 1000);
-   
-  },
-
-  mounted() {
-    //console.log(this.$refs)
-  }
   
 };
 </script>

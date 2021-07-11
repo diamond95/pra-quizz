@@ -114,4 +114,10 @@ module.exports = (app) => {
     * @method POST
     */
      app.post('/getQuizzList', isAuthenticated, AdminController.getQuizzList)
+    
+     /**
+    * @description Get list of all quizz by logged user
+    * @method POST
+    */
+     app.post('/createQuizz', isAuthenticated, AdminController.createQuizz)
 }

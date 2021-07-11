@@ -28,6 +28,9 @@
     },
     getCurrentGuests(quizID) {
         return Api().post('getCurrentGuests', quizID)
+    },
+    createQuizz(data) {
+        return Api().post('createQuizz', data)
     }
  
     

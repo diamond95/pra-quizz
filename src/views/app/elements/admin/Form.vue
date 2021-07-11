@@ -101,8 +101,8 @@
           </v-row>
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn fab dark large v-bind="attrs" v-on="on" @click="validate" color="primary" fixed right bottom>
-                <v-icon dark>mdi-download</v-icon>
+              <v-btn fab dark large v-bind="attrs" v-on="on" @click="validate" color="green darken-2" fixed right bottom>
+                <v-icon dark>mdi-content-save</v-icon>
               </v-btn>
             </template>
             <span>Kreiraj kviz</span>
@@ -111,7 +111,15 @@
       </v-card>
     </v-row>
     </v-form>
+    <Notification
+      v-if="notificationStatus != null"
+      :titleProp="notificationTitle"
+      :textProp="notificationStatus"
+      :dialog.sync="dialog"
+      @event-update-dialog="updateNotification"
+    ></Notification>
   </v-container>
+  
 </template>
 
 
@@ -122,9 +130,14 @@
 </style>
 
 <script>
+import notificationMixins from "@/mixins/notifications";
+import Notification from "../common/Notification";
+import store from '@/store/store'
+import QuizzService from '@/services/QuizzService'
 export default {
   name: "Form",
-  components: {},
+  mixins: [notificationMixins],
+  components: { Notification },
   data: () => ({
     valid: false,
     nameRules: [
@@ -135,6 +148,10 @@ export default {
       v => !!v || "PIN je obavezan",
       v => v.length >= 6 || "PIN mora biti veći od 6 znakova"
     ],
+    dialog: false,
+    error: null,
+    notificationStatus: null,
+    notificationTitle: "Greška!",
     quizz: {
       title: "",
       pin: ""
@@ -220,8 +237,31 @@ export default {
     removeAnswer: function(itemIndex, answerIndex) {
       this.questionList[itemIndex].question.answers.splice(answerIndex, 1);
     },
-    createQuizz: function() {
+    createQuizz: async function() {
+      try {
+        var create = (await QuizzService.createQuizz({
+        quizz: this.quizz,
+        questions: this.questionList,
+        userID: store.state.userInformation.user.IDUser
+      })).data.res
+
+      if(create) {
+        this.notificationTitle = `Uspješno!`
+        this.notificationStatus = `Kviz je uspješno kreiran!`
+
+        setTimeout( () => (
+          this.$router.push({
+            name: 'Home'
+          })
+        ), 2500)
+      }
+      } catch (error) {
+        this.error = error
+        this.notificationTitle = `Greška!`
+        this.notificationStatus = `Dogodila se pogreška prilikom kreiranja kviza!`
+      }
       
+     
     }
   }
 };

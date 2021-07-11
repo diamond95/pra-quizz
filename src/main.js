@@ -36,7 +36,7 @@ Vue.use(VXETable)
 sync(store, router)
 
 const i18n = new VueI18n({
-  locale: 'en', // default English
+  locale: localStorage.getItem('language') ||'en', // default English
   messages: defaultTranslation
 })
 
