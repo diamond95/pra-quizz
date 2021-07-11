@@ -1,21 +1,14 @@
 <template>
   <div class="mt-5">
-    <v-btn
-      color="secondary"
-      class="ma-2 ml-4 white--text"
-      @click="createQuizz"
-    >
-      Kreiraj kviz
-      <v-icon
-        right
-        dark
-      >
+    <v-btn color="secondary" class="ma-2 ml-4 white--text" @click="createQuizz">
+      {{ $t("adminView.createQuiz") }}
+      <v-icon right dark>
         mdi-pencil
       </v-icon>
     </v-btn>
 
     <v-expansion-panels popout class="mt-8">
-      <v-expansion-panel v-for="(item,i) in quizzList" :key="i">
+      <v-expansion-panel v-for="(item, i) in quizzList" :key="i">
         <v-expansion-panel-header>
           <h3 class="title font-weight-bold font">{{ item.title }}</h3>
         </v-expansion-panel-header>
@@ -36,7 +29,8 @@
 
               <v-row no-gutters>
                 <p class="font-weight-bold">
-                  <v-icon class="max-height">mdi-chevron-right</v-icon>Datum kreiranja:
+                  <v-icon class="max-height">mdi-chevron-right</v-icon
+                  >{{ $t("adminView.createDate") }}:
                 </p>
               </v-row>
             </div>
@@ -49,10 +43,13 @@
               </v-row>
 
               <v-row no-gutters>
-                <p
-                  class="ml-2"
-                  :class="getColorByTaskStatus(item.active)"
-                >{{ item.active == 0 ? 'Neaktivan' : 'Aktivan' }}</p>
+                <p class="ml-2" :class="getColorByTaskStatus(item.active)">
+                  {{
+                    item.active == 0
+                      ? $t("adminView.isInactive")
+                      : $t("adminView.isActive")
+                  }}
+                </p>
               </v-row>
               <v-row no-gutters>
                 <p class="ml-2">{{ item.created_at }}</p>
@@ -71,10 +68,13 @@
                   @click="showDialogPivot(item.task_name)"
                   color="blue accent-1"
                   small
-                >UREDI</v-btn>
+                  >{{ $t("adminView.editQuiz_btn") }}</v-btn
+                >
               </v-row>
               <v-row no-gutters class="pa-2">
-                <v-btn width="100" elevation="4" color="secondary" small>POKRENI</v-btn>
+                <v-btn width="100" elevation="4" color="secondary" small>{{
+                  $t("adminView.startQuiz_btn")
+                }}</v-btn>
               </v-row>
             </v-col>
           </v-row>
@@ -83,7 +83,6 @@
     </v-expansion-panels>
   </div>
 </template>
-
 
 <style scoped>
 .max-height {
@@ -103,7 +102,6 @@
 }
 </style>
 
-
 <script>
 import AdminService from "@/services/AdminService";
 import store from "@/store/store";
@@ -121,9 +119,11 @@ export default {
   methods: {
     getQuizzList: async function() {
       try {
-        this.quizzList = (await AdminService.getQuizzList({
-          IDUser: store.state.userInformation.user.IDUser
-        })).data.res;
+        this.quizzList = (
+          await AdminService.getQuizzList({
+            IDUser: store.state.userInformation.user.IDUser
+          })
+        ).data.res;
         this.convertEachDate();
       } catch (error) {
         this.error = error;
@@ -141,9 +141,9 @@ export default {
       return moment.utc(date).format("DD.MM.YYYY");
     },
     createQuizz: function() {
-        this.$router.push({
-            name: 'CreateQuizz'
-        })
+      this.$router.push({
+        name: "CreateQuizz"
+      });
     }
   }
 };

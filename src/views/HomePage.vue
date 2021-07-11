@@ -293,7 +293,6 @@
               <input
                 v-model="gameNickname"
                 type="text"
-                
                 class="input-username"
                 v-bind:placeholder="$t('homePage.fade_screen.game_nickname')"
               />
@@ -385,11 +384,11 @@ export default {
       registration: {
         email: "",
         username: "",
-        password: "",
+        password: ""
       },
       login: {
         username: "",
-        password: "",
+        password: ""
       },
       langs: this.$i18n.messages[this.$i18n.locale].homePage.languages,
       error: null,
@@ -407,10 +406,11 @@ export default {
   },
 
   methods: {
-    toggleLanguage: function () {
+    toggleLanguage: function() {
+      localStorage.setItem("language", this.$i18n.locale);
       this.langs = this.$i18n.messages[this.$i18n.locale].homePage.languages;
     },
-    userRegistration: async function () {
+    userRegistration: async function() {
       if (
         this.registration.email.length < 1 ||
         this.registration.username < 1 ||
@@ -429,7 +429,7 @@ export default {
         this.error = error.response.data.error;
       }
     },
-    userLogin: async function () {
+    userLogin: async function() {
       if (this.login.username < 1 || this.login.password < 1) {
         this.errorLogin = `Sva polja su obavezna!`;
         return;
@@ -439,11 +439,11 @@ export default {
         const login = await AuthService.login(this.login);
         if (login.status == 200) {
           this.errorLogin = ``;
-          console.log(login)
+          console.log(login);
           await this.setAuthStore(login);
 
           this.$router.push({
-            name: "Home",
+            name: "Home"
           });
         }
       } catch (error) {
@@ -451,14 +451,14 @@ export default {
       }
     },
 
-    setAuthStore: async function (res) {
+    setAuthStore: async function(res) {
       this.$store.dispatch("setToken", res.data.token);
       this.$store.dispatch("setUser", res.data.user);
       this.$store.dispatch("loggedUser", this.login.username);
       this.$store.dispatch("setUserInformation", res.data);
     },
 
-    joinGame: async function () {
+    joinGame: async function() {
       if (this.gamePin.length < 5) {
         this.joinGameError = `PIN mora biti minimalno 5 znakova.`;
         return;
@@ -467,11 +467,11 @@ export default {
       try {
         this.newGame = (
           await AuthService.joinGame({
-            game_pin: this.gamePin,
+            game_pin: this.gamePin
           })
         ).data;
-        this.quizID = this.newGame.res.IDQuiz
-        this.guestToken = this.newGame.token
+        this.quizID = this.newGame.res.IDQuiz;
+        this.guestToken = this.newGame.token;
         this.gameFoundTitle = this.newGame.res.title;
         this.showPinBox = false;
         this.showNicknameBox = true;
@@ -488,8 +488,8 @@ export default {
     },
 
     async playGame() {
-      if(!this.gameNickname.length > 0 || this.newGame == null) {
-        this.joinGameError = `Unesite nadimak.`
+      if (!this.gameNickname.length > 0 || this.newGame == null) {
+        this.joinGameError = `Unesite nadimak.`;
         return;
       }
 
@@ -498,31 +498,27 @@ export default {
           nickname: this.gameNickname,
           quizID: this.quizID
         });
-        
       } catch (error) {
         this.error = error.response.data.error;
       }
-      
+
       this.$store.dispatch("setToken", this.guestToken);
       this.$store.dispatch("loggedUser", this.gameNickname);
       this.$store.dispatch("setGameTitle", this.gameFoundTitle);
-      this.$store.dispatch("setGameCode", this.gamePin)
-      
-      this.$router.push({
-        name: 'PlayGame'
-      })
+      this.$store.dispatch("setGameCode", this.gamePin);
 
+      this.$router.push({
+        name: "PlayGame"
+      });
     }
   },
 
   created() {
     setTimeout(() => (this.elementVisible = false), 1000);
-   
   },
 
   mounted() {
     //console.log(this.$refs)
   }
-  
 };
 </script>

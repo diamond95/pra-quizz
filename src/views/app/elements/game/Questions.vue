@@ -7,9 +7,7 @@
       <v-col cols="12" md="11" lg="11" sm="11">
         <v-card outlined class="mt-5" elevation="4">
           <v-alert color="secondary" dark border="bottom">
-            <h3 color="secondary" class="mt-2">
-              {{ routeChanged.id }}.
-            </h3>
+            <h3 color="secondary" class="mt-2">{{ routeChanged.id }}.</h3>
             <v-spacer></v-spacer>
             <v-badge
               :value="true"
@@ -84,8 +82,8 @@
                     <v-list-item-action
                       v-else-if="
                         questionOver &&
-                        correctAnswers.length > 0 &&
-                        correctAnswers[index].is_correct == 1
+                          correctAnswers.length > 0 &&
+                          correctAnswers[index].is_correct == 1
                       "
                     >
                       <v-icon color="green lighten-1">
@@ -120,7 +118,7 @@
         ><Timer
           :timeLeft.sync="setTimeLeft"
           @question-finished="questionFinished"
-          v-if="setTimeLeft != 0" />
+          v-if="setTimeLeft != 0"/>
 
         <Timer
           :timeLeft.sync="prepareTimer"
@@ -139,7 +137,7 @@
             type="error"
             icon="mdi-alert-circle-outline"
           >
-            Kviz trenutno nije aktivan. Pričekajte dok host pokrene kviz...
+            {{ $t("playGame.notActive") }}
           </v-alert>
         </v-card>
       </v-row>
@@ -202,14 +200,14 @@ import {
   mdiSpeedometerMedium,
   mdiSpeedometer,
   mdiCloseThick,
-  mdiCheckBold,
+  mdiCheckBold
 } from "@mdi/js";
 export default {
   name: "Questions",
   mixins: [notificationMixins],
   components: {
     Timer,
-    Notification,
+    Notification
   },
   data: () => ({
     notificationStatus: null,
@@ -239,7 +237,7 @@ export default {
     questionNotStarted: true,
     prepareTimer: null,
     nextQuestionNumber: undefined,
-    guestList: [],
+    guestList: []
   }),
 
   methods: {
@@ -247,7 +245,7 @@ export default {
       this.overlay = true;
       setTimeout(() => (this.overlay = false), 800);
     },
-    calculateDifficulty: function () {
+    calculateDifficulty: function() {
       if (this.question.difficulty <= 33) {
         return "primary accent-4";
       } else if (
@@ -259,13 +257,13 @@ export default {
         return "red accent-4";
       }
     },
-    getQuestion: async function () {
+    getQuestion: async function() {
       var gameCode = store.state.gameCode;
       try {
         this.question = (
           await QuizzService.getQuestion({
             gameCode: gameCode,
-            questionNumber: this.$route.params.id,
+            questionNumber: this.$route.params.id
           })
         ).data.res;
         this.completedPercentage = this.calculatePercentage(
@@ -279,19 +277,18 @@ export default {
         if (error.response.data.errorCode === 379) {
           this.questionNotStarted = false;
           setTimeout(() => {
-            
             location.href = "#/app/play";
             location.reload(); // todo - sto napraviti ako su neka pitanja vec zavrsila, potreban je redirect na late join
           }, 300);
         }
       }
     },
-    getAnswers: async function () {
+    getAnswers: async function() {
       try {
         this.answers = (
           await QuizzService.getAnswers({
             gameCode: store.state.gameCode,
-            questionNumber: this.$route.params.id,
+            questionNumber: this.$route.params.id
           })
         ).data.res;
       } catch (error) {
@@ -301,25 +298,25 @@ export default {
     calculatePercentage(partialValue, totalValue) {
       return (100 * partialValue) / totalValue;
     },
-    getCurrentGuests: async function () {
+    getCurrentGuests: async function() {
       try {
         this.guestList = (
           await QuizzService.getCurrentGuests({
-            quizID: store.state.quizInfo.IDQuiz,
+            quizID: store.state.quizInfo.IDQuiz
           })
         ).data.res;
       } catch (error) {
         this.notificationStatus = error.response.data.error;
       }
     },
-    DOMUpdateActiveQuiz: function () {
+    DOMUpdateActiveQuiz: function() {
       //const self = this;
       this.intervalid7 = setInterval(this.timer, 3000);
     },
     async timer() {
       var quiz = (
         await QuizzService.isActiveQuizz({
-          gameCode: store.state.gameCode,
+          gameCode: store.state.gameCode
         })
       ).data.res;
 
@@ -343,7 +340,7 @@ export default {
         location.href = startQuizURL + "/1";
       }
     },
-    questionFinished: function () {
+    questionFinished: function() {
       this.questionOver = true;
 
       this.questionAnswersIndexes.sort();
@@ -358,7 +355,7 @@ export default {
       this.getAnswersCorrectInfo();
       this.markQuestionAnswered();
     },
-    loadNext: async function () {
+    loadNext: async function() {
       this.prepareTimer = null;
       var totalQuestions = store.state.questionSum;
       if (this.$route.params.id <= totalQuestions) {
@@ -370,8 +367,8 @@ export default {
         this.$router.push({
           name: "LiveQuizz",
           params: {
-            id: this.nextQuestionNumber,
-          },
+            id: this.nextQuestionNumber
+          }
         });
       }
     },
@@ -390,7 +387,7 @@ export default {
         this.correctAnswers = (
           await QuizzService.getAnswersCorrectInfo({
             gameCode: store.state.gameCode,
-            questionNumber: this.$route.params.id,
+            questionNumber: this.$route.params.id
           })
         ).data.res;
       } catch (error) {
@@ -398,14 +395,14 @@ export default {
       }
     },
 
-    markQuestionAnswered: async function () {
+    markQuestionAnswered: async function() {
       var questionID = this.question.IDQuestion;
 
       try {
         var marked = (
           await QuizzService.markQuestionAnswered({
             questionID: questionID,
-            gameCode: store.state.gameCode,
+            gameCode: store.state.gameCode
           })
         ).data;
 
@@ -421,7 +418,7 @@ export default {
       } catch (error) {
         this.notificationStatus = error.response.data.error;
       }
-    },
+    }
   },
 
   created() {
@@ -429,7 +426,7 @@ export default {
   },
 
   computed: {
-    routeChanged: function () {
+    routeChanged: function() {
       this.showLoader();
       if (this.$route.params.id) {
         this.getQuestion();
@@ -437,7 +434,7 @@ export default {
       }
 
       return this.$route.params;
-    },
-  },
+    }
+  }
 };
 </script>

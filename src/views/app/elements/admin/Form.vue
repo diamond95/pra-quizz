@@ -1,15 +1,14 @@
 <template>
   <v-container class="mt-5" fluid>
     <v-form ref="form" v-model="valid">
-    <v-row justify="center">
-      <v-card width="60%">
-        
+      <v-row justify="center">
+        <v-card width="60%">
           <v-row justify="center">
             <v-col cols="12" md="6" lg="6">
               <v-text-field
                 v-model="quizz.title"
                 :rules="nameRules"
-                label="Naziv"
+                v-bind:label="$t('adminForm.quizName_lbl')"
                 required
                 autocomplete="false"
               ></v-text-field>
@@ -28,25 +27,25 @@
           </v-row>
           <v-row justify="center" class="mb-10">
             <v-btn color="secondary" @click="createQuestion()">
-              <v-icon>mdi-plus</v-icon>Dodaj pitanje
+              <v-icon>mdi-plus</v-icon>{{ $t("adminForm.addQuestion_btn") }}
             </v-btn>
           </v-row>
-      </v-card>
-    </v-row>
-    <div class="white-space"></div>
+        </v-card>
+      </v-row>
+      <div class="white-space"></div>
 
-    <v-row v-for="(item,i) in questionList" :key="i">
-      <v-card class="mb-10" width="100%">
+      <v-row v-for="(item, i) in questionList" :key="i">
+        <v-card class="mb-10" width="100%">
           <v-row class="pa-3">
             <v-col cols="12" md="1" lg="1" sm="1">
-              <h3 class="pa-5">{{ i + 1}}.</h3>
+              <h3 class="pa-5">{{ i + 1 }}.</h3>
             </v-col>
             <v-col cols="12" md="9" lg="9" sm="9">
               <v-text-field
                 v-model="item.question.description"
-                label="Unesi pitanje"
-                :rules="[v => !!v || 'Unesi pitanje']"
+                v-bind:label="$t('adminForm.quizQuestion_lbl')"
                 required
+                :rules="[v => !!v || $t('adminForm.quizQuestion_lbl')]"
                 outlined
                 autocomplete="false"
               ></v-text-field>
@@ -54,16 +53,23 @@
             <v-col cols="12" md="1" lg="1" sm="1">
               <v-text-field
                 v-model="item.question.time"
-                label="Vrijeme"
+                v-bind:label="$t('adminForm.questionTime')"
                 required
-                :rules="[v => !!v || 'Unesi vrijeme']"
+                :rules="[v => !!v || $t('adminForm.questionTime')]"
                 width="20px"
                 type="number"
                 autocomplete="false"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="1" lg="1" sm="1">
-              <v-btn color="red darken-3" fab small dark class="mt-3" @click="deleteQuestion(i)">
+              <v-btn
+                color="red darken-3"
+                fab
+                small
+                dark
+                class="mt-3"
+                @click="deleteQuestion(i)"
+              >
                 <v-icon>mdi-delete-forever</v-icon>
               </v-btn>
             </v-col>
@@ -71,27 +77,44 @@
 
           <v-row>
             <v-col cols="12" md="1" lg="1" sm="1">
-              <v-btn color="primary" fab small dark class="ml-3" @click="addAnswer(i)">
+              <v-btn
+                color="primary"
+                fab
+                small
+                dark
+                class="ml-3"
+                @click="addAnswer(i)"
+              >
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-col>
             <v-row class="d-flex flex-column mb-6">
               <v-col cols="12" md="11" lg="11" sm="11">
-                <v-layout v-for="(answer, index) in item.question.answers" :key="index">
-                  <v-btn icon color="red" class="mt-4" @click="removeAnswer(i, index)">
+                <v-layout
+                  v-for="(answer, index) in item.question.answers"
+                  :key="index"
+                >
+                  <v-btn
+                    icon
+                    color="red"
+                    class="mt-4"
+                    @click="removeAnswer(i, index)"
+                  >
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
                   <v-text-field
                     v-model="answer.description"
-                    :label="`Odgovor ` + (index + 1) + `:`"
+                    v-bind:label="
+                      `${$t('adminForm.answer')} ` + (index + 1) + `:`
+                    "
                     required
-                    :rules="[v => !!v || 'Unesi odgovor']"
+                    :rules="[v => !!v || $t('adminForm.answer')]"
                     autocomplete="false"
                   ></v-text-field>
                   <v-switch
                     class="ml-4"
                     v-model="answer.isCorrect"
-                    label="Točno"
+                    v-bind:label="$t('adminForm.correct')"
                     inset
                     color="primary"
                   ></v-switch>
@@ -101,21 +124,30 @@
           </v-row>
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn fab dark large v-bind="attrs" v-on="on" @click="validate" color="primary" fixed right bottom>
+              <v-btn
+                fab
+                dark
+                large
+                v-bind="attrs"
+                v-on="on"
+                @click="validate"
+                color="primary"
+                fixed
+                right
+                bottom
+              >
                 <v-icon dark>mdi-download</v-icon>
               </v-btn>
             </template>
-            <span>Kreiraj kviz</span>
+            <span>{{ $t("adminForm.createQuiz_btn") }}</span>
           </v-tooltip>
-        
-      </v-card>
-    </v-row>
+        </v-card>
+      </v-row>
     </v-form>
   </v-container>
 </template>
 
-
-<style >
+<style>
 .white-space {
   height: 80px;
 }
@@ -199,7 +231,7 @@ export default {
     },
     validate() {
       var validation = this.$refs.form.validate();
-      if(validation) this.createQuizz();
+      if (validation) this.createQuizz();
     },
     reset() {
       this.$refs.form.reset();
@@ -220,9 +252,7 @@ export default {
     removeAnswer: function(itemIndex, answerIndex) {
       this.questionList[itemIndex].question.answers.splice(answerIndex, 1);
     },
-    createQuizz: function() {
-      
-    }
+    createQuizz: function() {}
   }
 };
 </script>
