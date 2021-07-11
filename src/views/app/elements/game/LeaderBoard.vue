@@ -4,7 +4,7 @@
         color="secondary"
         dark
         :icon="mdiClipboardListOutline "
-        border="left"
+        border="right"
         prominent
         dense
       >

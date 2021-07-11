@@ -42,6 +42,13 @@ const routes = [
   },
 
   {
+    path: '/app/run-quizz/:id/:question',
+    name: 'RunQuizz',
+    component: () => import(/* webpackChunkName: "AdministrationBoard" */ '../views/app/RunQuizz.vue'),
+    meta: { auth: true, isAdmin: true }
+  },
+
+  {
     path: '/new-password/:email',
     name: 'NewPassword',
     component: () => import('../views/NewPassword.vue')

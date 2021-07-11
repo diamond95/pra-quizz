@@ -41,28 +41,13 @@
         </v-list-item>
 
       
-        <v-list-group :value="catalogSubgroupValue" :prepend-icon="mdiBookOpenPageVariant">
-          <template v-slot:activator>
-            <v-list-item-title>test123</v-list-item-title>
-          </template>
         
-          <v-list-item link @click="$router.push({ name: 'Catalog'})">
-            <v-list-item-action>
-              <v-icon></v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Prikaz promocija</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-         
-        </v-list-group>
-
         <v-list-item link>
           <v-list-item-action>
-            <v-icon>{{mdiFileDocumentOutline }}</v-icon>
+            <v-icon>mdi-account-circle</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Korisni dokumenti</v-list-item-title>
+            <v-list-item-title>Profil</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         

@@ -62,7 +62,7 @@
             <v-spacer></v-spacer>
 
             <v-divider vertical class="mx-4"></v-divider>
-
+            
             <v-col cols="2" lg="2" sm="2" md="2">
               <v-row no-gutters class="pa-2">
                 <v-btn
@@ -75,7 +75,7 @@
                 >OBRIŠI</v-btn>
               </v-row>
               <v-row no-gutters class="pa-2">
-                <v-btn width="100" elevation="4" color="secondary" @click="runQuizz()" small>POKRENI</v-btn>
+                <v-btn width="100" elevation="4" color="secondary" @click="runQuizz(item.IDQuiz)" small>POKRENI</v-btn>
               </v-row>
             </v-col>
           </v-row>
@@ -130,8 +130,14 @@ export default {
   },
 
   methods: {
-    runQuizz() {
-      
+    runQuizz(IDQuiz) {
+      this.$router.push({
+        name: 'RunQuizz',
+        params: {
+          id: IDQuiz,
+          question: 1
+        }
+      })
     },
     getQuizzList: async function() {
       try {
