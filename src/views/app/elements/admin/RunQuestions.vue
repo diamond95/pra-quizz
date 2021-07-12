@@ -31,6 +31,10 @@
         </v-card>
       </v-col>
     </v-row>
+    <br /><br />
+    <v-row justify="center" class="ml-1" v-if="!showHideNext">
+      <v-btn color="secondary" rounded @click="quizzFinished">Završi kviz</v-btn>
+    </v-row>
   </v-container>
 </template>
 
@@ -70,7 +74,7 @@ export default {
       });
     },
     getCurrentQuestion: async function() {
-      
+      console.log("pozvan...")
       try {
         this.question = (await AdminService.getCurrentQuestion({
           quizID: this.$route.params.id,
@@ -91,7 +95,7 @@ export default {
       
       if(t == this.$route.params.question) {
         this.showHideNext = false
-        this.quizzFinished()
+        
       }
     },
 
@@ -100,7 +104,9 @@ export default {
         await AdminService.quizzFinished({
           quizID: this.$route.params.id
         })
-        
+        this.$router.push({
+          name: 'Home'
+        })
       } catch (error) {
         this.error = null
       }

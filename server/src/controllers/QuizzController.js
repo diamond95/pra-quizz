@@ -65,7 +65,7 @@
     try {
       const { gameCode, questionNumber } = req.body
 
-      var [a] = await db.query('SELECT a.IDAnswer, a.description FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID      WHERE qu.pin = ? AND a.questionID = ?', [gameCode, questionNumber])
+      var [a] = await db.query('SELECT a.IDAnswer, a.description FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID      WHERE qu.pin = ? AND q.question_order = ?', [gameCode, questionNumber])
 
       if(!a) {
         return res.status(403).send({
@@ -111,8 +111,8 @@
     try {
       const { gameCode, questionNumber } = req.body
 
-      var [ac] = await db.query('SELECT a.IDAnswer, a.description, a.is_correct FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID      WHERE qu.pin = ? AND a.questionID = ?', [gameCode, questionNumber])
-
+      var [ac] = await db.query('SELECT a.IDAnswer, a.description, a.is_correct FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE qu.pin = ? AND q.question_order = ?', [gameCode, questionNumber])
+      console.log(ac)
       if(!ac) {
         return res.status(403).send({
           error: 'Oops, something went wrong.'

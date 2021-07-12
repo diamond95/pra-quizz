@@ -242,7 +242,7 @@ export default {
   methods: {
     showLoader() {
       this.overlay = true;
-      setTimeout(() => (this.overlay = false), 800);
+      setTimeout(() => (this.overlay = false), 200);
     },
     calculateDifficulty: function () {
       if (this.question.difficulty <= 33) {
@@ -279,7 +279,7 @@ export default {
             
             location.href = "#/app/play";
             location.reload(); // todo - sto napraviti ako su neka pitanja vec zavrsila, potreban je redirect na late join
-          }, 3000);
+          }, 1000);
         }
       }
     },
@@ -291,6 +291,8 @@ export default {
             questionNumber: this.$route.params.id,
           })
         ).data.res;
+        console.log(store.state.gameCode)
+        console.log(this.$route.params.id)
       } catch (error) {
         this.notificationStatus = error.response.data.error;
       }
@@ -402,6 +404,7 @@ export default {
             questionNumber: this.$route.params.id,
           })
         ).data.res;
+        
       } catch (error) {
         this.notificationStatus = error.response.data.error;
       }
@@ -453,7 +456,7 @@ export default {
 
   computed: {
     routeChanged: function () {
-      this.showLoader();
+      //this.showLoader();
       if (this.$route.params.id) {
         this.getQuestion();
         this.getAnswers();

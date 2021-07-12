@@ -43,6 +43,9 @@ module.exports = {
       var [q] = await db.query('UPDATE quiz SET active = 0 WHERE IDQuiz = ?', [quizID])
       // eslint-disable-next-line no-unused-vars
       var [d] = await db.query('DELETE FROM quiz_guests WHERE quizID = ?', [quizID])
+
+      // eslint-disable-next-line no-unused-vars
+      var [qu] = await db.query('UPDATE question SET started = 0 WHERE quizID = ?', [quizID])
       if (!q) {
         return res.status(403).send({
           error: 'err!'
