@@ -40,6 +40,13 @@ const routes = [
     component: () => import(/* webpackChunkName: "AdministrationBoard" */ '../views/app/CreateQuizz.vue'),
     meta: { auth: true, isAdmin: true }
   },
+  // TODO 
+  {
+    path: '/app/edit-quizz/:id',
+    name: 'EditQuizz',
+    component: () => import(/* webpackChunkName: "AdministrationBoard" */ '../views/app/CreateQuizz.vue'),
+    meta: { auth: true, isAdmin: true }
+  },
 
   {
     path: '/app/run-quizz/:id/:question',

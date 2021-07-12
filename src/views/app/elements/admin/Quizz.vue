@@ -130,14 +130,22 @@ export default {
   },
 
   methods: {
-    runQuizz(IDQuiz) {
-      this.$router.push({
+    async runQuizz(IDQuiz) {
+      try {
+        (await AdminService.runQuizz({
+          id: IDQuiz
+        }))
+        this.$router.push({
         name: 'RunQuizz',
         params: {
           id: IDQuiz,
           question: 1
         }
       })
+      } catch (error) {
+        this.error = error
+      }
+      
     },
     deleteQuizz: async function(IDQuiz) {
       try {

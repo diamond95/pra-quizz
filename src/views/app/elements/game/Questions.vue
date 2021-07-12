@@ -122,11 +122,7 @@
           @question-finished="questionFinished"
           v-if="setTimeLeft != 0" />
 
-        <Timer
-          :timeLeft.sync="prepareTimer"
-          v-if="prepareTimer != null"
-          @question-finished="loadNext"
-      /></v-col>
+       </v-col>
     </v-row>
 
     <v-container v-else-if="showNotActive">
@@ -240,6 +236,7 @@ export default {
     prepareTimer: null,
     nextQuestionNumber: undefined,
     guestList: [],
+    interval19: false
   }),
 
   methods: {
@@ -282,7 +279,7 @@ export default {
             
             location.href = "#/app/play";
             location.reload(); // todo - sto napraviti ako su neka pitanja vec zavrsila, potreban je redirect na late join
-          }, 300);
+          }, 3000);
         }
       }
     },
@@ -314,7 +311,7 @@ export default {
     },
     DOMUpdateActiveQuiz: function () {
       //const self = this;
-      this.intervalid7 = setInterval(this.timer, 3000);
+      this.intervalid7 = setInterval(this.timer, 2000);
     },
     async timer() {
       var quiz = (
@@ -353,11 +350,23 @@ export default {
           this.selectedAnswers.push(element);
           z++;
         }
+        // save selected to db
       });
 
       this.getAnswersCorrectInfo();
-      this.markQuestionAnswered();
+
+      this.markQuestionAnswered()
+      //this.intervalid19 = setInterval(this.prepareForNextQuestion, 3000);
+      //this.prepareForNextQuestion()
     },
+    // async prepareForNextQuestion() {
+    //   var next = this.markQuestionAnswered();
+    //   console.log(next)
+    //   if(next) {
+    //     //clearInterval(this.intervalid19);
+    //     //this.loadNext();
+    //   }
+    // },
     loadNext: async function () {
       this.prepareTimer = null;
       var totalQuestions = store.state.questionSum;
@@ -409,14 +418,28 @@ export default {
           })
         ).data;
 
-        if (marked.res && marked.next) {
+        if (marked.next === false) {
+          if(this.interval19 == false) {
+            this.intervalid19 = setInterval(this.markQuestionAnswered, 1000);
+            this.interval19 = true;
+          }
+        } else if(marked.next === true) {
           this.setTimeLeft = 0;
-          setTimeout(() => {
-            this.prepareTimer = 10;
-          }, 2000);
-        } else {
-          this.notificationStatus = `Error`;
-          console.log("quiz over?");
+          clearInterval(this.intervalid19);
+          this.interval19 = false;
+          this.loadNext()
+          // this.notificationStatus = `Error`;
+        } else if(marked.next === null) {
+          // console.log("quiz over?");
+          clearInterval(this.intervalid19);
+          this.notificationTitle = `Kviz je završio!`
+          this.notificationStatus = `Odjava...`
+          setTimeout( () => (
+            this.$store.dispatch('logOut'),
+            this.$router.push({
+              name: 'HomePage'
+            })
+          ), 2500)
         }
       } catch (error) {
         this.notificationStatus = error.response.data.error;

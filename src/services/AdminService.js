@@ -14,6 +14,9 @@
     deleteQuizz (id) {
          return Api().post('deleteQuizz', id)
     },
+    runQuizz (id) {
+         return Api().post('runQuizz', id)
+    },
  
     
  }

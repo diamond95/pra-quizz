@@ -577,7 +577,7 @@ export default {
         this.showPinBox = false;
         this.showNicknameBox = true;
       } catch (error) {
-        this.joinGameError = error
+        this.joinGameError = `Taj kviz ne postoji!`
       }
     },
 

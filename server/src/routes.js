@@ -138,4 +138,10 @@ module.exports = (app) => {
     * @method POST
     */
      app.post('/deleteQuizz', isAuthenticated, AdminController.deleteQuizz)
+
+    /**
+    * @description Run quizz
+    * @method POST
+    */
+     app.post('/runQuizz', isAuthenticated, AdminController.runQuizz)
 }

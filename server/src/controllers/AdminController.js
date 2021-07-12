@@ -59,6 +59,31 @@ module.exports = {
 
   },
 
+  async runQuizz(req, res) {
+
+    try {
+      const { id } = req.body
+
+      var [q] = await db.query('UPDATE quiz SET active = 1 WHERE IDQuiz = ?', [id])
+      // eslint-disable-next-line no-unused-vars
+      var [question] = await db.query('UPDATE question SET started = 1 WHERE quizID = ? ORDER BY IDQuestion ASC LIMIT 1', [id])
+
+      if (!q) {
+        return res.status(403).send({
+          error: 'err!'
+        })
+      }
+
+      res.send({
+        res: q
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
   async createQuizz(req, res) {
     try {
       const { quizz, questions, userID } = req.body
@@ -69,8 +94,10 @@ module.exports = {
       
        var questionss = []
        var answers = []
+       var ctnr = 1;
         questions.forEach(element  => {
-          questionss.push([element.question.description, q.insertId, element.question.time])
+          questionss.push([element.question.description, q.insertId, element.question.time, ctnr])
+          ctnr++;
         });
 
         
@@ -78,7 +105,7 @@ module.exports = {
         
        
         var inrtid = []
-        var [insertQuestions] =  await db.query('INSERT INTO question(description, quizID, time) VALUES ?', [questionss])
+        var [insertQuestions] =  await db.query('INSERT INTO question(description, quizID, time, question_order) VALUES ?', [questionss])
         inrtid.push(insertQuestions.insertId)
 
         for (let index = 0; index < questions.length - 1; index++) {
