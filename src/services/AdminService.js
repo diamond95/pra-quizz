@@ -17,6 +17,15 @@
     runQuizz (id) {
          return Api().post('runQuizz', id)
     },
+    getCurrentQuestion (data) {
+         return Api().post('getCurrentQuestion', data)
+    },
+    questionFinished (id) {
+         return Api().post('questionFinished', id)
+    },
+    quizzFinished (id) {
+         return Api().post('quizzFinished', id)
+    },
  
     
  }

@@ -1,6 +1,6 @@
 <template>
   <v-app class="font" id="app">
-    <router-view />
+    <router-view :key="$route.path" />
   </v-app>
 </template>
 

@@ -144,4 +144,16 @@ module.exports = (app) => {
     * @method POST
     */
      app.post('/runQuizz', isAuthenticated, AdminController.runQuizz)
+
+    /**
+    * @description Пуе сгккуте йгуыешщт
+    * @method POST
+    */
+     app.post('/getCurrentQuestion', isAuthenticated, AdminController.getCurrentQuestion)
+
+    /**
+    * @description quizz finished 
+    * @method POST
+    */
+     app.post('/quizzFinished', isAuthenticated, AdminController.quizzFinished)
 }

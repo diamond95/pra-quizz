@@ -39,6 +39,12 @@
                   <v-icon class="max-height">mdi-chevron-right</v-icon>Datum kreiranja:
                 </p>
               </v-row>
+
+              <v-row no-gutters>
+                <p class="font-weight-bold">
+                  <v-icon class="max-height">mdi-chevron-right</v-icon>Ukupno pitanja:
+                </p>
+              </v-row>
             </div>
             <!-- divider -->
             <v-divider vertical class="mx-4"></v-divider>
@@ -56,6 +62,9 @@
               </v-row>
               <v-row no-gutters>
                 <p class="ml-2">{{ item.created_at }}</p>
+              </v-row>
+              <v-row no-gutters>
+                <p class="ml-2">{{ item.total }}</p>
               </v-row>
             </div>
 
@@ -75,7 +84,7 @@
                 >OBRIŠI</v-btn>
               </v-row>
               <v-row no-gutters class="pa-2">
-                <v-btn width="100" elevation="4" color="secondary" @click="runQuizz(item.IDQuiz)" small>POKRENI</v-btn>
+                <v-btn width="100" elevation="4" color="secondary" @click="runQuizz(item.IDQuiz, item.total)" small>POKRENI</v-btn>
               </v-row>
             </v-col>
           </v-row>
@@ -130,16 +139,18 @@ export default {
   },
 
   methods: {
-    async runQuizz(IDQuiz) {
+    async runQuizz(IDQuiz, t) {
       try {
         (await AdminService.runQuizz({
           id: IDQuiz
+          
         }))
         this.$router.push({
         name: 'RunQuizz',
         params: {
           id: IDQuiz,
-          question: 1
+          question: 1,
+          total: t
         }
       })
       } catch (error) {

@@ -18,8 +18,31 @@ module.exports = {
     try {
       const { IDUser } = req.body
 
-      var [q] = await db.query('select * from quiz where userID = ?', [IDUser])
+      var [q] = await db.query('select q.*, COUNT(IDQuestion) AS total from quiz as q INNER JOIN question as qu ON qu.quizID = q.IDQuiz where userID = ? GROUP BY q.IDQuiz', [IDUser])
+      if (!q) {
+        return res.status(403).send({
+          error: 'err!'
+        })
+      }
 
+      res.send({
+        res: q
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
+  async quizzFinished(req, res) {
+
+    try {
+      const { quizID } = req.body
+
+      var [q] = await db.query('UPDATE quiz SET active = 0 WHERE IDQuiz = ?', [quizID])
+      // eslint-disable-next-line no-unused-vars
+      var [d] = await db.query('DELETE FROM quiz_guests WHERE quizID = ?', [quizID])
       if (!q) {
         return res.status(403).send({
           error: 'err!'
@@ -140,6 +163,35 @@ module.exports = {
 
       res.send({
         res: successfullyCreated
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
+  async getCurrentQuestion(req, res) {
+ 
+    try {
+      const { quizID, question } = req.body
+      // eslint-disable-next-line no-unused-vars
+      var run = await db.query('UPDATE quiz SET active = 1 WHERE IDQuiz = ?', [quizID])
+      var [[q]] = await db.query('SELECT q.IDQuestion, q.description, q.difficulty, q.time, q.answered FROM question as q INNER JOIN quiz as qu on qu.IDQuiz = q.quizID where qu.IDQuiz = ?  AND q.question_order = ?', [quizID, question])
+
+      // eslint-disable-next-line no-unused-vars
+      var update = await db.query('UPDATE question SET started = 1 WHERE IDQuestion = ?', [question])
+
+      
+      if(!q) {
+        return res.status(403).send({
+          error: 'Cant get question!',
+          errorCode: 379
+        })
+      }
+
+      res.send({
+        res: q
       })
 
     } catch (error) {

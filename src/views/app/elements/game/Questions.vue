@@ -11,7 +11,7 @@
               {{ routeChanged.id }}.
             </h3>
             <v-spacer></v-spacer>
-            <v-badge
+            <!-- <v-badge
               :value="true"
               :color="calculateDifficulty()"
               :content="question.difficulty + '%'"
@@ -41,7 +41,7 @@
                   {{ mdiSpeedometer }}
                 </v-icon>
               </v-hover>
-            </v-badge>
+            </v-badge> -->
           </v-alert>
           <div class="spacer-100"></div>
           <v-list two-line>
