@@ -183,7 +183,7 @@ module.exports = {
       var [[q]] = await db.query('SELECT q.IDQuestion, q.description, q.difficulty, q.time, q.answered FROM question as q INNER JOIN quiz as qu on qu.IDQuiz = q.quizID where qu.IDQuiz = ?  AND q.question_order = ?', [quizID, question])
 
       // eslint-disable-next-line no-unused-vars
-      var update = await db.query('UPDATE question SET started = 1 WHERE IDQuestion = ?', [question])
+      var update = await db.query('UPDATE question SET started = 1 WHERE question_order = ? AND quizID = ?', [question, quizID])
 
       
       if(!q) {

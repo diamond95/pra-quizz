@@ -236,10 +236,14 @@ export default {
     prepareTimer: null,
     nextQuestionNumber: undefined,
     guestList: [],
-    interval19: false
+    interval19: false,
+    nextparam: null
   }),
 
   methods: {
+    getNextParam() {
+      this.nextparam = parseInt(this.$route.params.id) + 1
+    },
     showLoader() {
       this.overlay = true;
       setTimeout(() => (this.overlay = false), 200);
@@ -411,8 +415,8 @@ export default {
     },
 
     markQuestionAnswered: async function () {
-      var questionID = this.question.IDQuestion;
-
+      //var questionID = this.question.IDQuestion;
+      var questionID = this.nextparam
       try {
         var marked = (
           await QuizzService.markQuestionAnswered({
@@ -452,6 +456,7 @@ export default {
 
   created() {
     this.DOMUpdateActiveQuiz();
+    this.getNextParam()
   },
 
   computed: {

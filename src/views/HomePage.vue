@@ -571,6 +571,7 @@ export default {
             game_pin: this.gamePin,
           })
         ).data;
+        
         this.quizID = this.newGame.res.IDQuiz
         this.guestToken = this.newGame.token
         this.gameFoundTitle = this.newGame.res.title;
@@ -603,7 +604,7 @@ export default {
       } catch (error) {
         this.error = error.response.data.error;
       }
-      
+      console.log(this.error)
       this.$store.dispatch("setToken", this.guestToken);
       this.$store.dispatch("loggedUser", this.gameNickname);
       this.$store.dispatch("setGameTitle", this.gameFoundTitle);

@@ -138,9 +138,11 @@
       //var [sn] = await db.query('update question SET answered = 1 WHERE IDQuestion = ?', [questionID])
       
       /* get next question status */
-      var [[tp]] = await db.query('SELECT count(q.started) as result, q.IDQuestion, q.question_order, q.started FROM question as q INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE q.question_order > ? AND qu.pin = ? ORDER BY IDQuestion LIMIT 1', [questionID, gameCode])
+      var [[tp]] = await db.query('SELECT count(q.started) as result, q.IDQuestion, q.question_order, q.started FROM question as q INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE q.question_order = ? AND qu.pin = ? ORDER BY IDQuestion LIMIT 1', [questionID, gameCode])
       var ready = false
-
+      console.log(tp, " server response")
+      console.log(questionID, " question ID ")
+      console.log(gameCode, " game code ")
       if(tp.result > 0 && tp.started == 1) {
         //console.log("usao i nasao started za sljedece pitanje")
         //var [kp] = await db.query('UPDATE question AS q INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID SET q.started = 1 WHERE q.IDQuestion = ?', [tp.IDQuestion])
