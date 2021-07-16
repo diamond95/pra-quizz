@@ -66,10 +66,19 @@ module.exports = {
 
     try {
       const { id } = req.body
+      var [s] = await db.query('select * from question WHERE quizID = ?', [id])
+      
+      var answers = []
+      s.forEach( x => {
+        answers.push([x.IDQuestion])
+      })
+      console.log(answers)
+      var [aa] = await db.query('delete from answer where questionID IN (?)', [answers])
+      var [qa] = await db.query('delete from question where quizID = ?', [id])
+   
+      var [q] = await db.query('delete from quiz where IDQuiz = ?', [id])
 
-      var [q] = await db.query('TODO', [id])
-
-      if (!q) {
+      if (!q || !qa || !aa) {
         return res.status(403).send({
           error: 'err!'
         })
