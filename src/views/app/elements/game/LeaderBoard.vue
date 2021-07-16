@@ -8,13 +8,17 @@
         prominent
         dense
       >
-        <h2 color="secondary" class="mt-2">Leaderboard</h2>
+        <h2 color="secondary" class="mt-2">Rezultati</h2>
       </v-alert>
       <v-list>
-        <v-list-item link>
+        <v-list-item link v-for="user in list" :key="user.questID">
           <v-list-item-action>
-            <v-icon color="primary">mdi-account</v-icon>
+            <v-icon color="primary">mdi-account </v-icon>
+            
           </v-list-item-action>
+          <v-list-item-subtitle>
+            {{ user.nickname }} ( {{ user.correctNumber }} )
+          </v-list-item-subtitle>
           
         </v-list-item>
 
@@ -29,12 +33,16 @@
 
 <script>
 import store from "@/store/store";
-import QuizService from "@/services/QuizzService";
 import { mdiClipboardListOutline  } from "@mdi/js";
 export default {
   name: "LeaderBoard",
-
-  data: () => ({
+  props: {
+    data: {
+      type: Array
+    }
+  },
+  data() {
+    return {
     quizzCode: store.state.gameCode,
     quizzInformation: {},
     mdiClipboardListOutline ,
@@ -44,21 +52,14 @@ export default {
       { text: "Audience", icon: "mdi-account" },
       { text: "Conversions", icon: "mdi-flag" },
     ],
-  }),
+    list: this.data
+  }},
 
   methods: {
-    getQuizzInformation: async function () {
-      this.quizzInformation = (
-        await QuizService.getQuizzInformation({
-          game_pin: this.quizzCode,
-        })
-      ).data.res;
-
-    },
+    
   },
 
-  created() {
-    this.getQuizzInformation();
-  },
+
+ 
 };
 </script>

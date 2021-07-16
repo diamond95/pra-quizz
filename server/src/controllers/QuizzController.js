@@ -132,7 +132,6 @@
    async saveAnswers(req, res) {
  
     try {
-      // eslint-disable-next-line no-unused-vars
       const { quizID, correctAnswers, userAnswers, loggedUser } = req.body
 
       var correct = 0
@@ -145,8 +144,6 @@
       })
       var [[getGuestID]] = await db.query('SELECT * FROM guests WHERE nickname = ?', [loggedUser])
       if(correct != userAnswers.length || userAnswers.length == 0) {
-        console.log(correct, " correct")
-        console.log(userAnswers.length, "  duzina korisnikovih odgovora")
         
         await db.query('INSERT INTO guest_answers SET quizID = ?, questionID = ?, questID = ?, correct = 0', [quizID, correctAnswers[0].IDQuestion, getGuestID.IDGuest ])
       } else {
@@ -155,11 +152,8 @@
         ansCorr.forEach(a =>{
           if(a == userAnswers[c].IDAnswer) {
             cc = true
-            console.log("tocan odgovor !! ")
           } else {
             cc = false
-            console.log(" usao u netocan odgovor ... ")
-            console.log(a, userAnswers[c].IDAnswer)
             db.query('INSERT INTO guest_answers SET quizID = ?, questionID = ?, questID = ?, correct = 0', [quizID, correctAnswers[0].IDQuestion, getGuestID.IDGuest])
           }
           c++
@@ -169,10 +163,6 @@
           db.query('INSERT INTO guest_answers SET quizID = ?, questionID = ?, questID = ?, correct = 1', [quizID, correctAnswers[0].IDQuestion, getGuestID.IDGuest])
         }
       }
-
-      // var [ac] = await db.query('SELECT a.IDAnswer, a.description, a.is_correct, q.IDQuestion FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE qu.pin = ? AND q.question_order = ?', [gameCode, questionNumber])
-      // console.log(ac)
-     
 
       res.send({
         res: correct

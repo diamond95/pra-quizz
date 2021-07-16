@@ -110,6 +110,29 @@ module.exports = {
 
   },
 
+  async getTopPlayers(req, res) {
+
+    try {
+      const { quizID } = req.body
+
+      var [q] = await db.query('select questID, sum(correct) as correctNumber, g.nickname from guest_answers as ga INNER JOIN guests as g ON g.IDGuest = ga.questID WHERE ga.quizID = 4 GROUP BY ga.questID ORDER BY correctNumber DESC ;', [quizID])
+     
+      if (!q) {
+        return res.status(403).send({
+          error: 'err!'
+        })
+      }
+
+      res.send({
+        res: q
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
   async createQuizz(req, res) {
     try {
       const { quizz, questions, userID } = req.body

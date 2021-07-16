@@ -162,4 +162,10 @@ module.exports = (app) => {
     * @method POST
     */
      app.post('/quizzFinished', isAuthenticated, AdminController.quizzFinished)
+
+    /**
+    * @description get top players
+    * @method POST
+    */
+     app.post('/getTopPlayers', isAuthenticated, AdminController.getTopPlayers)
 }

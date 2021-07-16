@@ -26,6 +26,9 @@
     quizzFinished (id) {
          return Api().post('quizzFinished', id)
     },
+    getTopPlayers (id) {
+         return Api().post('getTopPlayers', id)
+    },
  
     
  }

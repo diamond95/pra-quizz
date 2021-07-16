@@ -4,7 +4,7 @@
       <v-col cols="12" md="2" lg="2" sm="2"
         ><Timer
           :timeLeft.sync="setTimeLeft"
-          
+          @question-finished="questionFinished"
           v-if="setTimeLeft != 0" />
 
        </v-col>
@@ -55,7 +55,8 @@ export default {
     error: null,
     setTimeLeft: 0,
     total: 0,
-    showHideNext: true
+    showHideNext: true,
+    topPlayers: []
   }),
   created() {
     this.getCurrentQuestion();
@@ -74,13 +75,12 @@ export default {
       });
     },
     getCurrentQuestion: async function() {
-      console.log("pozvan...")
       try {
         this.question = (await AdminService.getCurrentQuestion({
           quizID: this.$route.params.id,
           question: this.$route.params.question
         })).data.res
-        this.setTimeLeft = this.question.time;
+        this.setTimeLeft = this.question.time + 3;
         console.log(this.question)
       } catch (error) {
         this.error = null
@@ -110,16 +110,17 @@ export default {
       } catch (error) {
         this.error = null
       }
+    },
+    questionFinished: async function() {
+      try {
+        this.topPlayers = (await AdminService.getTopPlayers({
+          quizID: this.$route.params.id
+        })).data.res
+        this.$emit('scoreboard', this.topPlayers)
+      } catch (error) {
+        this.error = error
+      }
     }
-    // questionFinished: async function() {
-    //   try {
-    //     await AdminService.questionFinished({
-    //       IDQuestion: this.$route.params.question
-    //     })
-    //   } catch (error) {
-    //     this.error = error
-    //   }
-    // }
   }
 };
 </script>
