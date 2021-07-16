@@ -295,8 +295,6 @@ export default {
             questionNumber: this.$route.params.id,
           })
         ).data.res;
-        console.log(store.state.gameCode)
-        console.log(this.$route.params.id)
       } catch (error) {
         this.notificationStatus = error.response.data.error;
       }
@@ -348,7 +346,7 @@ export default {
     },
     questionFinished: function () {
       this.questionOver = true;
-
+      this.selectedAnswers = []
       this.questionAnswersIndexes.sort();
       var z = 0;
       this.answers.forEach((element, index) => {
@@ -358,7 +356,7 @@ export default {
         }
         // save selected to db
       });
-
+      console.log(this.selectedAnswers)
       this.getAnswersCorrectInfo();
 
       this.markQuestionAnswered()
@@ -408,9 +406,21 @@ export default {
             questionNumber: this.$route.params.id,
           })
         ).data.res;
-        
+        this.saveAnswers()
       } catch (error) {
         this.notificationStatus = error.response.data.error;
+      }
+    },
+    saveAnswers: async function() {
+      try {
+        await QuizzService.saveAnswers({
+            quizID: store.state.quizInfo.IDQuiz,
+            correctAnswers: this.correctAnswers,
+            userAnswers: this.selectedAnswers,
+            loggedUser: store.state.loggedUser
+          })
+      } catch (error) {
+        this.error = error 
       }
     },
 

@@ -31,6 +31,9 @@
     },
     createQuizz(data) {
         return Api().post('createQuizz', data)
+    },
+    saveAnswers(data) {
+        return Api().post('saveAnswers', data)
     }
  
     

@@ -111,7 +111,7 @@
     try {
       const { gameCode, questionNumber } = req.body
 
-      var [ac] = await db.query('SELECT a.IDAnswer, a.description, a.is_correct FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE qu.pin = ? AND q.question_order = ?', [gameCode, questionNumber])
+      var [ac] = await db.query('SELECT a.IDAnswer, a.description, a.is_correct, q.IDQuestion FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE qu.pin = ? AND q.question_order = ?', [gameCode, questionNumber])
       console.log(ac)
       if(!ac) {
         return res.status(403).send({
@@ -121,6 +121,61 @@
 
       res.send({
         res: ac
+      })
+
+    } catch (error) {
+      ErrorHandling.status500(res, error)
+    }
+
+  },
+
+   async saveAnswers(req, res) {
+ 
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const { quizID, correctAnswers, userAnswers, loggedUser } = req.body
+
+      var correct = 0
+      var ansCorr = []
+      correctAnswers.forEach(x => {
+          if(x.is_correct == 1) {
+            ansCorr.push(x.IDAnswer)
+            correct++;
+          }
+      })
+      var [[getGuestID]] = await db.query('SELECT * FROM guests WHERE nickname = ?', [loggedUser])
+      if(correct != userAnswers.length || userAnswers.length == 0) {
+        console.log(correct, " correct")
+        console.log(userAnswers.length, "  duzina korisnikovih odgovora")
+        
+        await db.query('INSERT INTO guest_answers SET quizID = ?, questionID = ?, questID = ?, correct = 0', [quizID, correctAnswers[0].IDQuestion, getGuestID.IDGuest ])
+      } else {
+        var c = 0;
+        var cc = false
+        ansCorr.forEach(a =>{
+          if(a == userAnswers[c].IDAnswer) {
+            cc = true
+            console.log("tocan odgovor !! ")
+          } else {
+            cc = false
+            console.log(" usao u netocan odgovor ... ")
+            console.log(a, userAnswers[c].IDAnswer)
+            db.query('INSERT INTO guest_answers SET quizID = ?, questionID = ?, questID = ?, correct = 0', [quizID, correctAnswers[0].IDQuestion, getGuestID.IDGuest])
+          }
+          c++
+        })
+
+        if(cc) {
+          db.query('INSERT INTO guest_answers SET quizID = ?, questionID = ?, questID = ?, correct = 1', [quizID, correctAnswers[0].IDQuestion, getGuestID.IDGuest])
+        }
+      }
+
+      // var [ac] = await db.query('SELECT a.IDAnswer, a.description, a.is_correct, q.IDQuestion FROM answer as a INNER JOIN question as q ON a.questionID = q.IDQuestion INNER JOIN quiz as qu ON qu.IDQuiz = q.quizID WHERE qu.pin = ? AND q.question_order = ?', [gameCode, questionNumber])
+      // console.log(ac)
+     
+
+      res.send({
+        res: correct
       })
 
     } catch (error) {

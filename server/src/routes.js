@@ -114,6 +114,12 @@ module.exports = (app) => {
     */
      app.post('/getCurrentGuests', isAuthenticated, QuizzController.getCurrentGuests)
 
+    /**
+    * @description Save quest answers
+    * @method POST
+    */
+     app.post('/saveAnswers', isAuthenticated, QuizzController.saveAnswers)
+
 
     /////////////////////////////////////////////////////////////////////
     ///                                                                //
