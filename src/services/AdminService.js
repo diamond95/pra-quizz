@@ -29,6 +29,9 @@
     getTopPlayers (id) {
          return Api().post('getTopPlayers', id)
     },
+    editProfile (data) {
+         return Api().post('editProfile', data)
+    },
  
     
  }

@@ -42,7 +42,7 @@
 
       
         
-        <v-list-item link>
+        <v-list-item link @click="handleEventClick">
           <v-list-item-action>
             <v-icon>mdi-account-circle</v-icon>
           </v-list-item-action>
@@ -53,6 +53,7 @@
         
       </v-list>
     </v-navigation-drawer> 
+    <UserProfile @dialogEvent="dialogEvent" :dialog="showModal" />
   </div>
 </template>
 <style scoped>
@@ -81,17 +82,23 @@
 </style>
 
 <script>
+import UserProfile from '../UserProfile'
 import { mdiChevronDown, mdiCogOutline, mdiBookOpenPageVariant, mdiFrequentlyAskedQuestions } from "@mdi/js";
 import { mdiFileDocumentOutline, mdiChartBubble, mdiFinance } from "@mdi/js";
 import store from "@/store/store"
 export default {
   components: {
-    
+    UserProfile
   },
   props: {
     catalogSubgroupValue: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    nickname: function() {
+      return this.$store.state.loggedUser;
     }
   },
   data: () => ({
@@ -105,10 +112,10 @@ export default {
     dialog: false,
     drawer: null,
     version: "",
-    
+    showModal: false,
     okBtnLoading: false,
     items: [{ title: "Odjava" }],
-    nickname: store.state.loggedUser,
+    //nickname: store.state.loggedUser,
     gameTitle: store.state.gameTitle
   }),
 
@@ -118,7 +125,14 @@ export default {
       this.$router.push({
         name: "HomePage"
       });
-    }
+    },
+    dialogEvent: function() {
+      this.showModal = false;
+    },
+    handleEventClick() {
+      this.showModal = true;
+      
+    },
   }
 };
 </script>

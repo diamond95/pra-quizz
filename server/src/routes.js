@@ -168,4 +168,10 @@ module.exports = (app) => {
     * @method POST
     */
      app.post('/getTopPlayers', isAuthenticated, AdminController.getTopPlayers)
+
+    /**
+    * @description edit user profile
+    * @method POST
+    */
+     app.post('/editProfile', isAuthenticated, AuthController.editProfile)
 }

@@ -72,6 +72,29 @@ module.exports = {
 
   },
 
+  async editProfile(req, res) {
+    try {
+
+      const { email, username, password } = req.body;
+
+      var hashedPassword = await generateHash(password);
+
+      // eslint-disable-next-line no-unused-vars
+      var [user] = await db.query('UPDATE users SET username = ?, password = ? WHERE email = ?', [username, hashedPassword, email]);
+
+      const userJson = { email, username }
+      res.send({
+        user: userJson,
+        token: jwtSignUser(userJson)
+      });
+    } catch (err) {
+      res.status(400).send({
+        error: `Korisničko ime/email se već koristi.`
+      });
+    }
+
+  },
+
 
   /**
    * 

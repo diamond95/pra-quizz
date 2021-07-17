@@ -22,7 +22,7 @@ export default new Vuex.Store({
         user: null,
         isUserLoggedIn: false,
         isAdmin: false,
-        userInformation:null,
+        userInformation: null,
         gameTitle: null,
         gameCode: null,
         questionSum: null,
@@ -30,41 +30,45 @@ export default new Vuex.Store({
 
     },
     mutations: {
-       setToken(state, token) {
-           state.token = token
-           if(token) {
-               state.isUserLoggedIn = true
-           } else {
-               state.isUserLoggedIn = false
-           }
-       },
-       setUser(state, user) {
-           state.user = user
-       },
-       setUserInformation(state, userInformation) {
-           state.userInformation = userInformation
-       },
-       setGameTitle(state, title) {
-           state.gameTitle = title
-       },
-       setGameCode(state, code) {
-           state.gameCode = code
-       },
-       setQuestionSum(state, total) {
-           state.questionSum = total
-       },
-       setQuizInfo(state, f) {
-        state.quizInfo = f
-    },
-       loggedUser(state, loggedUser) {
-           state.loggedUser = loggedUser
-       },
-       logOut(state) {
-           state.user = null
-           state.token = null
-           state.isUserLoggedIn = null
-           state.userInformation = null
-       }
+        setToken(state, token) {
+            state.token = token
+            if (token) {
+                state.isUserLoggedIn = true
+            } else {
+                state.isUserLoggedIn = false
+            }
+        },
+        setUser(state, user) {
+            state.user = user
+        },
+        setUserInformation(state, userInformation) {
+            state.userInformation = userInformation
+        },
+        setGameTitle(state, title) {
+            state.gameTitle = title
+        },
+        setGameCode(state, code) {
+            state.gameCode = code
+        },
+        setQuestionSum(state, total) {
+            state.questionSum = total
+        },
+        setQuizInfo(state, f) {
+            state.quizInfo = f
+        },
+        newUsername(state, username) {
+            state.userInformation.user.username = username
+            state.loggedUser = username
+        },
+        loggedUser(state, loggedUser) {
+            state.loggedUser = loggedUser
+        },
+        logOut(state) {
+            state.user = null
+            state.token = null
+            state.isUserLoggedIn = null
+            state.userInformation = null
+        }
 
 
     },
@@ -75,25 +79,28 @@ export default new Vuex.Store({
         setUser({ commit }, user) {
             commit('setUser', user)
         },
-        setUserInformation( {commit}, userInformation) {
+        setUserInformation({ commit }, userInformation) {
             commit('setUserInformation', userInformation)
         },
-        loggedUser( { commit }, loggedUser) {
+        loggedUser({ commit }, loggedUser) {
             commit('loggedUser', loggedUser)
         },
-        setGameTitle( { commit }, title) {
+        setGameTitle({ commit }, title) {
             commit('setGameTitle', title)
         },
-        setGameCode( { commit }, code) {
+        setGameCode({ commit }, code) {
             commit('setGameCode', code)
         },
-        setQuestionSum( { commit }, total) {
+        setQuestionSum({ commit }, total) {
             commit('setQuestionSum', total)
         },
-        setQuizInfo( { commit }, t) {
+        setQuizInfo({ commit }, t) {
             commit('setQuizInfo', t)
         },
-        logOut({commit}) {
+        newUsername({ commit }, un) {
+            commit('newUsername', un)
+        },
+        logOut({ commit }) {
             commit("logOut")
         },
 
