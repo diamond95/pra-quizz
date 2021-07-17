@@ -27,11 +27,11 @@ export default {
                 {
                     key: 'en',
                     val: 'English'
-                  },
-                  {
+                },
+                {
                     key: 'hr',
                     val: 'Croatian'
-                  }
+                }
             ]
         }
     },
@@ -63,11 +63,11 @@ export default {
                 {
                     key: 'en',
                     val: 'Engleski'
-                  },
-                  {
+                },
+                {
                     key: 'hr',
                     val: 'Hrvatski'
-                  }
+                }
             ]
         }
     }
